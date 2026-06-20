@@ -8,6 +8,10 @@
 set -u
 
 OUT="${1:-bmad-output}"
+COMPAT_DIR="bmad"
+COMPAT_PROJECT="${COMPAT_DIR}/project.yaml"
+COMPAT_WORKFLOW="${COMPAT_DIR}/workflow-status.yaml"
+COMPAT_SPRINT="${COMPAT_DIR}/sprint-status.yaml"
 
 # Colors (degrade gracefully if not a TTY)
 if [ -t 1 ]; then
@@ -36,6 +40,38 @@ exists_any() { # returns 0 if any glob matches
   return 1
 }
 
+normalize_track() {
+  local raw
+  raw="$(echo "${1:-}" | tr '[:upper:]' '[:lower:]' | tr '_' '-')"
+  case "$raw" in
+    *enterprise*) echo "enterprise" ;;
+    *bmad-method*|*bmad\ method*) echo "bmad-method" ;;
+    *quick-flow*|*quick\ flow*|*quick*) echo "quick-flow" ;;
+    *) echo "unknown" ;;
+  esac
+}
+
+read_track_from_yaml() {
+  local file="$1"
+  [ -f "$file" ] || { echo "unknown"; return; }
+  local raw
+  raw="$(grep -E '^[[:space:]]*track:' "$file" 2>/dev/null | head -1 | sed 's/.*: *//' | tr -d '"' | tr -d "'")"
+  normalize_track "$raw"
+}
+
+HAS_COMPAT_PROJECT=1
+HAS_COMPAT_WORKFLOW=1
+HAS_COMPAT_SPRINT=1
+[ -f "$COMPAT_PROJECT" ] && HAS_COMPAT_PROJECT=0
+[ -f "$COMPAT_WORKFLOW" ] && HAS_COMPAT_WORKFLOW=0
+[ -f "$COMPAT_SPRINT" ] && HAS_COMPAT_SPRINT=0
+COMPAT_TRACK="unknown"
+if [ "$HAS_COMPAT_WORKFLOW" -eq 0 ]; then
+  COMPAT_TRACK="$(read_track_from_yaml "$COMPAT_WORKFLOW")"
+elif [ "$HAS_COMPAT_PROJECT" -eq 0 ]; then
+  COMPAT_TRACK="$(read_track_from_yaml "$COMPAT_PROJECT")"
+fi
+
 echo ""
 echo -e "${BLUE}== BMAD Planning State ==${NC}"
 echo -e "${BLUE}Output folder:${NC} ${OUT}"
@@ -43,11 +79,20 @@ echo ""
 
 if [ ! -d "$OUT" ]; then
   echo -e "${YELLOW}Output folder '${OUT}' does not exist — project not initialized.${NC}"
+  if [ "$HAS_COMPAT_PROJECT" -eq 0 ] || [ "$HAS_COMPAT_WORKFLOW" -eq 0 ] || [ "$HAS_COMPAT_SPRINT" -eq 0 ]; then
+    echo ""
+    echo -e "${BLUE}Compatibility (optional):${NC}"
+    mark "$COMPAT_PROJECT"  "bmad/project"; HAS_COMPAT_PROJECT=$?
+    mark "$COMPAT_WORKFLOW" "workflow-status"; HAS_COMPAT_WORKFLOW=$?
+    mark "$COMPAT_SPRINT"   "sprint-status"; HAS_COMPAT_SPRINT=$?
+  fi
   echo -e "Inferred phase: ${YELLOW}uninitialized${NC}"
-  echo -e "Track: ${GRAY}unknown${NC}"
+  echo -e "Track: ${GRAY}${COMPAT_TRACK}${NC}"
   echo ""
   echo "PHASE=uninitialized"
-  echo "TRACK=unknown"
+  echo "TRACK=${COMPAT_TRACK}"
+  echo "HAS_COMPAT_WORKFLOW=$([ "$HAS_COMPAT_WORKFLOW" -eq 0 ] && echo 1 || echo 0)"
+  echo "COMPAT_TRACK=${COMPAT_TRACK}"
   exit 0
 fi
 
@@ -105,6 +150,17 @@ else
 fi
 echo ""
 
+if [ "$HAS_COMPAT_PROJECT" -eq 0 ] || [ "$HAS_COMPAT_WORKFLOW" -eq 0 ] || [ "$HAS_COMPAT_SPRINT" -eq 0 ]; then
+  echo -e "${BLUE}Compatibility (optional):${NC}"
+  mark "$COMPAT_PROJECT"  "bmad/project"; HAS_COMPAT_PROJECT=$?
+  mark "$COMPAT_WORKFLOW" "workflow-status"; HAS_COMPAT_WORKFLOW=$?
+  mark "$COMPAT_SPRINT"   "sprint-status"; HAS_COMPAT_SPRINT=$?
+  if [ "$COMPAT_TRACK" != "unknown" ]; then
+    printf "  ${GRAY}compat track:${NC} %s\n" "$COMPAT_TRACK"
+  fi
+  echo ""
+fi
+
 # --- Track detection (from decision-log) ---
 TRACK="unknown"
 if [ "$HAS_LOG" -eq 0 ]; then
@@ -114,6 +170,9 @@ if [ "$HAS_LOG" -eq 0 ]; then
     *bmad?method*|*bmad-method*|*bmad_method*) TRACK="bmad-method" ;;
     *quick*)                 TRACK="quick-flow" ;;
   esac
+fi
+if [ "$TRACK" = "unknown" ] && [ "$COMPAT_TRACK" != "unknown" ]; then
+  TRACK="$COMPAT_TRACK"
 fi
 
 # --- Phase inference ---
@@ -155,3 +214,5 @@ echo "HAS_STORIES=$([ $HAS_STORIES -eq 0 ] && echo 1 || echo 0)"
 echo "STORY_COUNT=${STORY_COUNT}"
 echo "READY_COUNT=${READY_COUNT}"
 echo "BEYOND_COUNT=${BEYOND_COUNT}"
+echo "HAS_COMPAT_WORKFLOW=$([ $HAS_COMPAT_WORKFLOW -eq 0 ] && echo 1 || echo 0)"
+echo "COMPAT_TRACK=${COMPAT_TRACK}"

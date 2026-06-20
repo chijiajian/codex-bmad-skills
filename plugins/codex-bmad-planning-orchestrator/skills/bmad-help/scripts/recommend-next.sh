@@ -32,6 +32,8 @@ HAS_STORIES="$(get HAS_STORIES)"
 STORY_COUNT="$(get STORY_COUNT)"
 READY_COUNT="$(get READY_COUNT)"
 BEYOND_COUNT="$(get BEYOND_COUNT)"
+HAS_COMPAT_WORKFLOW="$(get HAS_COMPAT_WORKFLOW)"
+COMPAT_TRACK="$(get COMPAT_TRACK)"
 
 # Track flags
 needs_arch=0; needs_epics=0; needs_prd=0
@@ -87,6 +89,18 @@ elif [ "${BEYOND_COUNT:-0}" -gt 0 ]; then
 else
   SKILL="(none — handoff complete)"
   WHY="All required planning artifacts exist and every story is ready-for-dev. Hand the stories off to your external dev tool."
+fi
+
+if [ "${HAS_COMPAT_WORKFLOW:-0}" = "1" ]; then
+  compat_note="Optional XMM compatibility state found at bmad/workflow-status.yaml; bmad-output remains the primary planning workspace."
+  if [ "${COMPAT_TRACK:-unknown}" != "unknown" ] && [ "${COMPAT_TRACK:-unknown}" != "$TRACK" ]; then
+    compat_note="${compat_note} Compatibility track says ${COMPAT_TRACK}; native routing says ${TRACK}."
+  fi
+  if [ -n "$NOTE" ]; then
+    NOTE="${NOTE} ${compat_note}"
+  else
+    NOTE="$compat_note"
+  fi
 fi
 
 echo ""

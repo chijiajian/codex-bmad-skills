@@ -1,0 +1,21 @@
+# Optional XMM-style BMAD compatibility state.
+# Native source of truth remains {{OUTPUT_FOLDER}}/config.yaml.
+
+compatibility: "xmm-bmad"
+generated_at: "{{TIMESTAMP}}"
+
+project:
+  name: "{{PROJECT_NAME}}"
+  track: "{{PROJECT_TRACK}}"
+  created: "{{TIMESTAMP}}"
+
+native:
+  output_folder: "{{OUTPUT_FOLDER}}"
+  config: "{{OUTPUT_FOLDER}}/config.yaml"
+  project_context: "{{OUTPUT_FOLDER}}/project-context.md"
+  decision_log: "{{OUTPUT_FOLDER}}/decision-log.md"
+  stories_folder: "{{OUTPUT_FOLDER}}/stories"
+
+languages:
+  communication: "English"
+  document_output: "English"

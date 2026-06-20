@@ -2,11 +2,11 @@
 name: bmad-handoff
 description: |
   Emits bmad-output/handoff-manifest.json from ready-for-dev stories for external
-  dev tools or orchestrators. Use when the user says "generate a handoff", "create
-  handoff manifest", "export stories for dev", "hand off to dev tool", "ready to
-  hand off", "prepare handoff for external tool", "export ready-for-dev stories",
-  or asks for an exportable artifact of stories ready for dev. Read-only with
-  respect to story files.
+  dev tools or orchestrators. Use when the user says "$bmad-handoff",
+  "bmad:handoff", "generate a handoff", "create handoff manifest", "export stories for
+  dev", "hand off to dev tool", "ready to hand off", "prepare handoff for
+  external tool", "export ready-for-dev stories", or asks for an exportable
+  artifact of stories ready for dev. Read-only with respect to story files.
 ---
 
 # BMAD Handoff

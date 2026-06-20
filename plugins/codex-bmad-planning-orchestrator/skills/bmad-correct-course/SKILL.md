@@ -2,10 +2,11 @@
 name: bmad-correct-course
 description: |
   Re-enters BMAD planning after requirements, features, architecture, or constraints
-  change mid-stream. Use when the user says "we need to change course", "scope has
-  changed", "new requirement came in", "drop feature X", "pivot", "re-plan after
-  the change", "requirements changed mid-sprint", "correct course", "architecture
-  changed", "re-scope the backlog", "cancel story X", "add epic for Y", or "new
+  change mid-stream. Use for "$bmad-correct-course", "bmad:correct-course", or
+  when the user says "we need to change course", "scope has changed", "new
+  requirement came in", "drop feature X", "pivot", "re-plan after the change",
+  "requirements changed mid-sprint", "correct course", "architecture changed",
+  "re-scope the backlog", "cancel story X", "add epic for Y", or "new
   constraints". Updates affected planning artifacts and decision-log.md only; never
   writes code or runs tests.
 ---

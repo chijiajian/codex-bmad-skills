@@ -2,7 +2,8 @@
 name: bmad-architecture
 description: |
   Produces or validates bmad-output/architecture.md and ADRs from an approved PRD,
-  mapping FR/NFR coverage to concrete design decisions. Use when the user says
+  mapping FR/NFR coverage to concrete design decisions. Use for
+  "$bmad-architecture", "bmad:architecture", "bmad:arch", or when the user says
   "design the architecture", "create architecture", "system design", "ADR",
   "architecture decision record", "tech stack", "data model", "API design",
   "NFR coverage", "solutioning", or asks what comes after a PRD. Supports

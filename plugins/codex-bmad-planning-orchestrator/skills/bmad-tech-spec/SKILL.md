@@ -2,11 +2,12 @@
 name: bmad-tech-spec
 description: |
   Creates, updates, or validates bmad-output/tech-spec.md for Quick Flow work
-  (roughly 1-15 stories) when a full PRD plus architecture is too heavy. Use when
-  the user says "write a tech spec", "create a technical specification", "tech
-  spec for this feature", "quick spec", "small project spec", "we don't need a
-  full PRD", "just a tech spec", "spec out this change", or "document this
-  feature". Redirect larger scope to bmad-prd and bmad-architecture.
+  (roughly 1-15 stories) when a full PRD plus architecture is too heavy. Use for
+  "$bmad-tech-spec", "bmad:tech-spec", or when the user says "write a tech spec",
+  "create a technical specification", "tech spec for this feature", "quick spec",
+  "small project spec", "we don't need a full PRD", "just a tech spec", "spec out
+  this change", or "document this feature". Redirect larger scope to bmad-prd and
+  bmad-architecture.
 ---
 
 # BMAD Tech Spec — Quick Flow

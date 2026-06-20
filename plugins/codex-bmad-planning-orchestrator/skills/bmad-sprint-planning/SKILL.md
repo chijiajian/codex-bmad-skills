@@ -2,11 +2,12 @@
 name: bmad-sprint-planning
 description: |
   Creates or maintains bmad-output/sprint-status.yaml as the story sequencing and
-  status system of record. Use when the user says "sequence the stories", "build
-  the sprint status", "create sprint-status.yaml", "assign parallel sets", "order
-  stories by dependency", "set up story sequencing", "initialize sprint tracking",
-  "ready the backlog", or "prepare for dev handoff". Sequencing only: no velocity,
-  burndown, points, coverage metrics, implementation, tests, lints, or builds.
+  status system of record. Use for "$bmad-sprint-planning", "bmad:sprint-plan", or
+  when the user says "sequence the stories", "build the sprint status", "create
+  sprint-status.yaml", "assign parallel sets", "order stories by dependency", "set
+  up story sequencing", "initialize sprint tracking", "ready the backlog", or
+  "prepare for dev handoff". Sequencing only: no velocity, burndown, points,
+  coverage metrics, implementation, tests, lints, or builds.
 ---
 
 # BMAD Sprint Planning

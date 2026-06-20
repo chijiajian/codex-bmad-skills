@@ -12,6 +12,19 @@ SKILL.md keeps the summary; this file holds the full detail.
 
 The detector treats the absence of `project-context.md` as "not initialized."
 
+## Optional compatibility state
+
+If present, `bmad/workflow-status.yaml` is supplemental state for users coming from
+XMM-style workflows. Native `bmad-output/` files remain authoritative.
+
+Read compatibility state only after checking native artifacts:
+
+1. Use `bmad-output/decision-log.md` for the confirmed track when available.
+2. If the native track is missing, read `bmad/workflow-status.yaml` or
+   `bmad/project.yaml` for `track`.
+3. Surface the compatibility files in the status summary so the user knows they exist.
+4. Do not require compatibility files for normal operation.
+
 ## Phase map (canonical order)
 
 ```

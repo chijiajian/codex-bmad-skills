@@ -40,6 +40,16 @@ Use $bmad-init to start a BMAD planning workspace.
 Use $bmad-prd to draft a PRD from my product brief.
 ```
 
+You can also use `bmad:*` intent phrases in normal chat, such as `bmad:status`,
+`bmad:init`, or `bmad:prd`. These are skill-discovery phrases, not slash commands.
+This package does not create `/bmad`.
+
+## Documentation
+
+- [Getting started](docs/getting-started.md)
+- [Commands and intents](docs/commands.md)
+- [Configuration](docs/configuration.md)
+
 ## Skills-only install
 
 If you do not want to install the plugin marketplace entry, install just the skill folders into Codex's skill directory:
@@ -63,6 +73,10 @@ Remove the skills-only install with:
 ```
 
 The validator checks the Codex plugin manifest, all skill frontmatter, and BMAD's planning-only scope rules.
+
+## Roadmap
+
+- [XMM BMAD compatibility plan](docs/xmm-compatibility-plan.md)
 
 ## Skill Catalog
 

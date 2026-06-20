@@ -3,11 +3,11 @@ name: bmad-investigate
 description: |
   Produces a graded investigation case file for bugs, incidents, and issue triage:
   symptoms, evidence, hypotheses, suspected components, and planning response. Use
-  when the user says "investigate this bug", "triage this issue", "debug triage",
-  "what's causing this", "why is this broken", "root cause this", "create a bug
-  report", "diagnose this", "error triage", or "issue investigation". Supports
-  Create, Update, and Validate. Investigates and documents only; never fixes code,
-  runs tests, or implements.
+  for "$bmad-investigate", "bmad:investigate", or when the user says "investigate
+  this bug", "triage this issue", "debug triage", "what's causing this", "why is
+  this broken", "root cause this", "create a bug report", "diagnose this", "error
+  triage", or "issue investigation". Supports Create, Update, and Validate.
+  Investigates and documents only; never fixes code, runs tests, or implements.
 ---
 
 # BMAD Investigate

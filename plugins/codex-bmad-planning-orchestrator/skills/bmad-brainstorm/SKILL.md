@@ -3,7 +3,8 @@ name: bmad-brainstorm
 description: |
   Runs structured ideation using SCAMPER, SWOT, 5 Whys, Mind Mapping, Six Thinking
   Hats, Reverse Brainstorming, Starbursting, or Brainwriting, then writes a
-  brainstorming-report.md. Use when the user says "brainstorm", "ideate",
+  brainstorming-report.md. Use when the user says "$bmad-brainstorm",
+  "bmad:brainstorm", "brainstorm", "ideate",
   "generate ideas", "explore options", "SCAMPER", "SWOT analysis", "mind map",
   "Six Thinking Hats", "5 Whys", "what if we", or "find alternatives". Supports
   Create, Update, and Validate. Planning only; never writes code or runs tests.

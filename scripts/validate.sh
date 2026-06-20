@@ -13,6 +13,13 @@ python3 -m json.tool "$PLUGIN_ROOT/.codex-plugin/plugin.json" >/dev/null
 
 echo "JSON manifests parse"
 
+if command -v ruby >/dev/null 2>&1; then
+  find "$PLUGIN_ROOT" \( -name '*.yaml' -o -name '*.yml' \) -exec ruby -e 'require "yaml"; ARGV.each { |f| YAML.load_file(f) }' {} +
+  echo "YAML files parse"
+else
+  echo "Ruby not found; skipping YAML parse check"
+fi
+
 if [ -f "$PLUGIN_VALIDATOR" ]; then
   python3 "$PLUGIN_VALIDATOR" "$PLUGIN_ROOT"
 else

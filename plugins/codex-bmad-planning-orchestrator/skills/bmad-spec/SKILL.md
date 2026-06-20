@@ -2,11 +2,12 @@
 name: bmad-spec
 description: |
   Distills messy input into a five-field SPEC.md kernel: Problem, Capabilities,
-  Constraints, Non-Goals, and Success Metrics. Use when the user says "create a
-  spec", "write a spec", "distill this into a spec", "I have a brain dump",
-  "turn this into something structured", "clean up these notes", "make a SPEC",
-  "define the problem", "help me scope this", "summarize what we're building",
-  "what are we actually solving", or provides raw notes/transcript needing structure.
+  Constraints, Non-Goals, and Success Metrics. Use for "$bmad-spec", "bmad:spec",
+  or when the user says "create a spec", "write a spec", "distill this into a
+  spec", "I have a brain dump", "turn this into something structured", "clean up
+  these notes", "make a SPEC", "define the problem", "help me scope this",
+  "summarize what we're building", "what are we actually solving", or provides raw
+  notes/transcript needing structure.
 ---
 
 # BMAD Spec — Five-Field Kernel Distiller

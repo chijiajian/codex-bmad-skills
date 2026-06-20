@@ -1,12 +1,12 @@
 ---
 name: bmad-help
 description: |
-  Routes BMAD planning sessions by scanning bmad-output state and recommending the
-  next single BMAD skill. Use when the user asks "what's next", "what do I do
-  next", "where am I", "what's my status", "continue", "resume planning",
-  "which skill should I run", "what BMAD step is next", or types "$bmad-help" /
-  "status". Auto-invoke to orient at the start of a BMAD planning session. Routes
-  only; never writes planning documents.
+  Routes BMAD planning sessions by scanning bmad-output state plus optional
+  bmad/workflow-status.yaml compatibility state, then recommending the next single
+  BMAD skill. Use when the user asks "what's next", "where am I", "what's my
+  status", "continue", "resume planning", "which skill should I run", "what BMAD
+  step is next", or types "$bmad-help", "bmad:help", "bmad:status", "bmad:next",
+  "bmad status", or "status". Routes only; never writes planning documents.
 ---
 
 # BMAD Help — Orchestration Spine
@@ -41,6 +41,10 @@ Threaded across every phase: **project-context.md** (the project "constitution")
 **decision-log.md** (decisions carried between workflows). If these are missing, the
 first recommendation is always to establish them.
 
+When `bmad/workflow-status.yaml` exists, treat it as optional compatibility state
+for users coming from XMM-style workflows. Native `bmad-output/` artifacts remain
+authoritative; compatibility state can fill gaps such as an otherwise missing track.
+
 > Implementation itself (writing code, running tests) is OUT OF SCOPE. The last artifact
 > this plugin produces is a ready-for-dev story file or handoff manifest, passed to an
 > external dev tool.
@@ -66,8 +70,8 @@ Per-track required vs optional steps in detail: see
    bash ../bmad-help/scripts/detect-state.sh [output-folder]
    ```
    Default output folder is `bmad-output/`. It prints a checklist of artifacts (present
-   or missing), the detected track (from decision-log if recorded), and the inferred
-   phase.
+   or missing), the detected track (from decision-log first, then optional
+   `bmad/workflow-status.yaml`), the inferred phase, and any compatibility files.
 
 2. **Recommend next.** Map the detected state to the next skill:
    ```bash

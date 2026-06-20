@@ -2,11 +2,12 @@
 name: bmad-research
 description: |
   Conducts market, competitive, domain, or technical research with citations and
-  writes research-report.md for BMAD planning. Use when the user says "research
-  this topic", "competitive analysis", "who are the competitors", "market size",
-  "market landscape", "technical research", "evaluate this technology", "domain
-  research", "industry analysis", "find out about this space", "research before
-  we plan", or "gather information". Supports Create, Update, and Validate.
+  writes research-report.md for BMAD planning. Use for "$bmad-research",
+  "bmad:research", or when the user says "research this topic", "competitive
+  analysis", "who are the competitors", "market size", "market landscape",
+  "technical research", "evaluate this technology", "domain research", "industry
+  analysis", "find out about this space", "research before we plan", or "gather
+  information". Supports Create, Update, and Validate.
 ---
 
 # BMAD Research

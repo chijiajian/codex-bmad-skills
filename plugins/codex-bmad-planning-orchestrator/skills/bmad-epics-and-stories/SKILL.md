@@ -2,12 +2,13 @@
 name: bmad-epics-and-stories
 description: |
   Shards approved PRD/tech-spec and architecture inputs into bmad-output/epics.md
-  plus ready-for-dev {epic}.{story}.{slug}.story.md context objects. Use when the
-  user says "shard the PRD", "create epics", "break the PRD into epics", "break
-  this epic into stories", "create stories", "draft story files", "generate the
-  story for X", "prepare stories for dev", "mark the story ready for dev", or
-  "validate this story". Supports Create, Update, and Validate. Planning only; no
-  story points and no implementation.
+  plus ready-for-dev {epic}.{story}.{slug}.story.md context objects. Use for
+  "$bmad-epics-and-stories", "bmad:stories", "bmad:story-draft", or when the user
+  says "shard the PRD", "create epics", "break the PRD into epics", "break this
+  epic into stories", "create stories", "draft story files", "generate the story
+  for X", "prepare stories for dev", "mark the story ready for dev", or "validate
+  this story". Supports Create, Update, and Validate. Planning only; no story
+  points and no implementation.
 ---
 
 # BMAD Epics & Stories

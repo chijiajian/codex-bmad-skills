@@ -2,11 +2,12 @@
 name: bmad-product-brief
 description: |
   Creates, updates, or validates a BMAD product brief covering problem, users,
-  core features, goals, constraints, and success metrics. Use when the user says
+  core features, goals, constraints, and success metrics. Use for
+  "$bmad-product-brief", "bmad:product-brief", "bmad:brief", or when the user says
   "create a product brief", "I need a product brief", "do discovery", "define my
   product", "what problem are we solving", "capture our product vision", "update
-  the product brief", "validate the brief", "run discovery", "start a product
-  brief", or "plan a product". Planning artifact only; no code is written or run.
+  the product brief", "validate the brief", "run discovery", or "plan a product".
+  Planning artifact only; no code is written or run.
 ---
 
 # BMAD Product Brief

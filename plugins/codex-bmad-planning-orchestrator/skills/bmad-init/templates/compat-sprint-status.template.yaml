@@ -1,0 +1,17 @@
+# Optional XMM-style BMAD sprint status.
+# Supplemental only: native sequencing remains {{OUTPUT_FOLDER}}/sprint-status.yaml.
+
+compatibility: "xmm-bmad"
+generated_at: "{{TIMESTAMP}}"
+last_updated: "{{TIMESTAMP}}"
+
+project:
+  name: "{{PROJECT_NAME}}"
+  track: "{{PROJECT_TRACK}}"
+
+sprint:
+  status: "not-started"
+  native_status_file: "{{OUTPUT_FOLDER}}/sprint-status.yaml"
+  sequencing_model: "count-based"
+
+stories: []

@@ -2,12 +2,12 @@
 name: bmad-builder
 description: |
   Scaffolds and validates custom planning/orchestration skills inside the BMAD
-  Planning & Orchestrator plugin. Use when the user says "create a skill",
-  "scaffold a skill", "build a new planning skill", "add a skill to the
-  orchestrator", "extend BMAD planning", "validate this skill", "check this
-  skill for scope violations", or "bmad-builder". Supports Create, Validate,
-  and Scaffold. Plans and scaffolds only; never writes application code, runs
-  tests, lints, or builds.
+  Planning & Orchestrator plugin. Use for "$bmad-builder", "bmad:builder", or
+  when the user says "create a skill", "scaffold a skill", "build a new planning
+  skill", "add a skill to the orchestrator", "extend BMAD planning", "validate
+  this skill", "check this skill for scope violations", or "bmad-builder".
+  Supports Create, Validate, and Scaffold. Plans and scaffolds only; never writes
+  application code, runs tests, lints, or builds.
 ---
 
 # BMAD Builder

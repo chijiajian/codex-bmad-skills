@@ -17,7 +17,7 @@ paths:
   decision_log: "bmad-output/decision-log.md"
   project_context: "bmad-output/project-context.md"
 languages:
-  communication: "English"     # how Claude talks to the user
+  communication: "English"     # how Codex talks to the user
   document_output: "English"   # language of generated artifacts
 ```
 
@@ -92,6 +92,35 @@ which skill/workflow made it. The first entry is always the track choice from in
 - Seeds `decision-log.md` and `project-context.md` from templates **only if they do
   not already exist** (or exist but are empty). Never clobbers populated files.
 - `--validate` checks structure and required config fields without mutating anything.
+- `--compat-xmm` also creates `bmad/` compatibility state. It rewrites
+  `bmad/project.yaml` from current args and seeds `bmad/workflow-status.yaml` plus
+  `bmad/sprint-status.yaml` only if missing or empty.
+
+## Optional XMM compatibility schema
+
+The native source of truth remains `bmad-output/config.yaml`. Compatibility files are
+supplemental and live at:
+
+```text
+bmad/
+├── project.yaml
+├── workflow-status.yaml
+└── sprint-status.yaml
+```
+
+Use these files only when the user is migrating from an XMM-style BMAD workflow or
+explicitly asks for `bmad/*.yaml` state. Downstream planning skills should still read
+`paths.output_folder` and `project.track` from native config first.
+
+## Language selection
+
+Conversation language and artifact language are separate:
+
+- Respond to the user in the user's language.
+- Generate planning artifacts in `languages.document_output`.
+- If artifact language is missing, ask once or default to the language of the source
+  material.
+- Keep filenames, YAML keys, JSON keys, and machine-readable status values in English.
 
 ## Voice
 

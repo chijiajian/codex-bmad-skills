@@ -2,11 +2,12 @@
 name: bmad-prfaq
 description: |
   Creates, updates, or validates an Amazon-style Working-Backwards PRFAQ: a future
-  press release plus internal and external FAQs. Use when the user says "write a
-  PRFAQ", "working backwards", "press release", "future press release",
-  "stress-test the concept", "validate the idea before building", "internal FAQ",
-  "external FAQ", "Amazon-style product brief", or "PRFAQ for this feature".
-  Produces prfaq.md in the configured output folder.
+  press release plus internal and external FAQs. Use for "$bmad-prfaq",
+  "bmad:prfaq", or when the user says "write a PRFAQ", "working backwards",
+  "press release", "future press release", "stress-test the concept", "validate
+  the idea before building", "internal FAQ", "external FAQ", "Amazon-style
+  product brief", or "PRFAQ for this feature". Produces prfaq.md in the configured
+  output folder.
 ---
 
 # BMAD PRFAQ

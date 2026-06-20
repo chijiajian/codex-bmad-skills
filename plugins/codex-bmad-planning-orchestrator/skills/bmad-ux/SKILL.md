@@ -2,11 +2,12 @@
 name: bmad-ux
 description: |
   Creates, updates, or validates UX planning docs for UI work: DESIGN.md for the
-  visual system and EXPERIENCE.md for journeys, states, and flows. Use when the
-  user says "design the UX", "create UX planning docs", "define the design system",
-  "map the user flows", "UX for this feature", "wireframe the flows", "user
-  journeys", "accessibility design", "WCAG compliance", "design tokens",
-  "responsive design plan", or "create DESIGN.md / EXPERIENCE.md".
+  visual system and EXPERIENCE.md for journeys, states, and flows. Use for
+  "$bmad-ux", "bmad:ux", or when the user says "design the UX", "create UX
+  planning docs", "define the design system", "map the user flows", "UX for this
+  feature", "wireframe the flows", "user journeys", "accessibility design",
+  "WCAG compliance", "design tokens", "responsive design plan", or "create
+  DESIGN.md / EXPERIENCE.md".
 ---
 
 # BMAD UX — Visual System & Experience Planning

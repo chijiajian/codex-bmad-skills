@@ -2,12 +2,13 @@
 name: bmad-prd
 description: |
   Authors, updates, or validates bmad-output/prd.md: FRs, NFRs, requirement
-  priorities, acceptance criteria, traceability, and an epic outline. Use when the
-  user says "create a PRD", "write product requirements", "draft requirements",
-  "define functional requirements", "define non-functional requirements",
-  "prioritize features", "MoSCoW", "RICE score these features", "update the PRD",
-  "add a requirement", "validate my PRD", or "review requirements traceability".
-  Planning only; never writes application code, runs tests, lints, or builds.
+  priorities, acceptance criteria, traceability, and an epic outline. Use for
+  "$bmad-prd", "bmad:prd", or when the user says "create a PRD", "write product
+  requirements", "draft requirements", "define functional requirements", "define
+  non-functional requirements", "prioritize features", "MoSCoW", "RICE score
+  these features", "update the PRD", "add a requirement", "validate my PRD", or
+  "review requirements traceability". Planning only; never writes application code,
+  runs tests, lints, or builds.
 ---
 
 # BMAD PRD Facilitator

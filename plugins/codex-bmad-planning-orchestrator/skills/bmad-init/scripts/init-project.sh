@@ -6,6 +6,7 @@
 #   <output>/config.yaml          (always rewritten from current args)
 #   <output>/decision-log.md      (seeded from template ONLY if missing/empty)
 #   <output>/project-context.md   (seeded from template ONLY if missing/empty)
+# Optional --compat-xmm also seeds bmad/*.yaml compatibility state.
 #
 # PLANNING ONLY. Creates folders + seed docs. Never writes app code, runs tests,
 # lints, or builds. No numbered levels. No story points / velocity / burndown.
@@ -22,21 +23,24 @@ PROJECT_NAME=""
 PROJECT_TRACK=""
 OUTPUT_FOLDER="bmad-output"
 VALIDATE_ONLY=false
+COMPAT_XMM=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --name)   PROJECT_NAME="$2"; shift 2 ;;
     --track)  PROJECT_TRACK="$2"; shift 2 ;;
     --output) OUTPUT_FOLDER="$2"; shift 2 ;;
+    --compat-xmm|--xmm-compat) COMPAT_XMM=true; shift ;;
     --validate) VALIDATE_ONLY=true; shift ;;
     -h|--help)
-      echo "Usage: $0 --name <name> --track <quick-flow|bmad-method|enterprise> [--output <folder>]"
+      echo "Usage: $0 --name <name> --track <quick-flow|bmad-method|enterprise> [--output <folder>] [--compat-xmm]"
       echo "       $0 --validate [--output <folder>]"
       echo ""
-      echo "  --name      Project name (required for init)"
-      echo "  --track     quick-flow | bmad-method | enterprise (required for init)"
-      echo "  --output    Output folder (default: bmad-output)"
-      echo "  --validate  Check an existing workspace without mutating it"
+      echo "  --name        Project name (required for init)"
+      echo "  --track       quick-flow | bmad-method | enterprise (required for init)"
+      echo "  --output      Output folder (default: bmad-output)"
+      echo "  --compat-xmm  Also seed optional XMM-style bmad/*.yaml status files"
+      echo "  --validate    Check an existing workspace without mutating it"
       exit 0 ;;
     *) echo -e "${RED}Unknown option: $1${NC}"; exit 1 ;;
   esac
@@ -46,6 +50,10 @@ CONFIG_FILE="${OUTPUT_FOLDER}/config.yaml"
 DECISION_LOG="${OUTPUT_FOLDER}/decision-log.md"
 PROJECT_CONTEXT="${OUTPUT_FOLDER}/project-context.md"
 STORIES_DIR="${OUTPUT_FOLDER}/stories"
+COMPAT_DIR="bmad"
+COMPAT_PROJECT="${COMPAT_DIR}/project.yaml"
+COMPAT_WORKFLOW="${COMPAT_DIR}/workflow-status.yaml"
+COMPAT_SPRINT="${COMPAT_DIR}/sprint-status.yaml"
 
 # --- Validate mode ----------------------------------------------------------
 if [ "$VALIDATE_ONLY" = true ]; then
@@ -53,6 +61,13 @@ if [ "$VALIDATE_ONLY" = true ]; then
   echo ""
   ERRORS=0
   check() { if [ "$1" = true ]; then echo -e "${GREEN}\xe2\x9c\x93${NC} $2"; else echo -e "${RED}\xe2\x9c\x97${NC} $2"; ERRORS=$((ERRORS+1)); fi; }
+  check_yaml() {
+    if command -v ruby >/dev/null 2>&1; then
+      ruby -e 'require "yaml"; YAML.load_file(ARGV[0])' "$1" >/dev/null 2>&1
+    else
+      grep -q ':' "$1"
+    fi
+  }
 
   [ -d "$OUTPUT_FOLDER" ] && check true "output folder exists: $OUTPUT_FOLDER" || check false "output folder missing: $OUTPUT_FOLDER"
   [ -d "$STORIES_DIR" ] && check true "stories folder exists" || check false "stories folder missing"
@@ -70,6 +85,30 @@ if [ "$VALIDATE_ONLY" = true ]; then
       esac
     else
       check false "config missing project.track"
+    fi
+  fi
+
+  if [ -d "$COMPAT_DIR" ] || [ -f "$COMPAT_PROJECT" ] || [ -f "$COMPAT_WORKFLOW" ] || [ -f "$COMPAT_SPRINT" ]; then
+    echo ""
+    echo -e "${BLUE}Validating optional XMM compatibility state: ${COMPAT_DIR}/${NC}"
+    [ -d "$COMPAT_DIR" ] && check true "compat folder exists: $COMPAT_DIR" || check false "compat folder missing: $COMPAT_DIR"
+    for pair in \
+      "$COMPAT_PROJECT:project.yaml" \
+      "$COMPAT_WORKFLOW:workflow-status.yaml" \
+      "$COMPAT_SPRINT:sprint-status.yaml"
+    do
+      file="${pair%%:*}"
+      label="${pair##*:}"
+      if [ -f "$file" ]; then
+        check true "compat $label exists"
+        check_yaml "$file" && check true "compat $label parses as YAML" || check false "compat $label is malformed YAML"
+      else
+        check false "compat $label missing"
+      fi
+    done
+    if [ -f "$COMPAT_WORKFLOW" ]; then
+      grep -q "track:" "$COMPAT_WORKFLOW" && check true "workflow-status has project.track" || check false "workflow-status missing project.track"
+      grep -q "native_output_folder:" "$COMPAT_WORKFLOW" && check true "workflow-status points to native output folder" || check false "workflow-status missing native_output_folder"
     fi
   fi
 
@@ -103,6 +142,9 @@ echo -e "${GREEN}${BOLD}Initializing BMAD planning workspace${NC}"
 echo -e "  Project: ${BOLD}${PROJECT_NAME}${NC}"
 echo -e "  Track:   ${BOLD}${PROJECT_TRACK}${NC}"
 echo -e "  Output:  ${BOLD}${OUTPUT_FOLDER}${NC}"
+if [ "$COMPAT_XMM" = true ]; then
+  echo -e "  Compat:  ${BOLD}${COMPAT_PROJECT}, ${COMPAT_WORKFLOW}, ${COMPAT_SPRINT}${NC}"
+fi
 echo ""
 
 # Folders (idempotent)
@@ -160,6 +202,18 @@ seed_if_empty() {
 
 seed_if_empty "$DECISION_LOG" "${TEMPLATE_DIR}/decision-log.template.md" "Decision Log"
 seed_if_empty "$PROJECT_CONTEXT" "${TEMPLATE_DIR}/project-context.template.md" "Project Context"
+
+if [ "$COMPAT_XMM" = true ]; then
+  mkdir -p "$COMPAT_DIR"
+  echo -e "${GREEN}\xe2\x9c\x93${NC} compat folder ready: ${COMPAT_DIR}/"
+
+  if [ -f "${TEMPLATE_DIR}/compat-project.template.yaml" ]; then
+    render "${TEMPLATE_DIR}/compat-project.template.yaml" > "$COMPAT_PROJECT"
+    echo -e "${GREEN}\xe2\x9c\x93${NC} wrote: ${COMPAT_PROJECT}"
+  fi
+  seed_if_empty "$COMPAT_WORKFLOW" "${TEMPLATE_DIR}/compat-workflow-status.template.yaml" "Workflow Status"
+  seed_if_empty "$COMPAT_SPRINT" "${TEMPLATE_DIR}/compat-sprint-status.template.yaml" "Sprint Status"
+fi
 
 echo ""
 echo -e "${GREEN}${BOLD}Workspace ready.${NC}"

@@ -3,12 +3,13 @@ name: bmad-init
 description: |
   Initialize a BMAD planning workspace: pick a scale-adaptive TRACK (Quick Flow /
   BMad Method / Enterprise) interactively, then scaffold the output folder, a config
-  file, an empty decision-log.md, and a project-context.md "constitution". Use when
-  the user says "initialize BMAD", "set up BMAD", "start a new BMAD project",
-  "scaffold the planning workspace", "bmad init", "create the bmad config", or is
-  beginning planning and has no bmad-output/ folder yet. Also use when the user asks
-  "which track should I use?" or "what scale is my project?". This is the FIRST skill
-  to run before any other planning workflow (brief, PRD, architecture, stories).
+  file, an empty decision-log.md, and a project-context.md "constitution". Use for
+  "$bmad-init", "bmad:init", "bmad init", "initialize BMAD", "set up BMAD",
+  "start a new BMAD project", "scaffold the planning workspace", "create the bmad
+  config", "XMM compatibility", or when planning begins and no bmad-output/ folder
+  exists. Also use when the user asks "which track should I use?" or "what scale is
+  my project?". This is the FIRST skill before brief, PRD, architecture, stories, or
+  handoff workflows.
 ---
 
 # BMAD Init — Workspace Scaffolder
@@ -36,6 +37,18 @@ bmad-output/
 `config.yaml` is the single source of truth other skills read to find the output
 folder and the chosen track.
 
+If the user asks for XMM compatibility, `--compat-xmm` also creates supplemental
+state under `bmad/`:
+
+```
+bmad/
+├── project.yaml
+├── workflow-status.yaml
+└── sprint-status.yaml
+```
+
+These files are optional compatibility state. They do not replace `bmad-output/`.
+
 ## The three TRACKS (never numbered Levels)
 
 | Track | Story count | Planning artifacts |
@@ -60,6 +73,7 @@ call. A heuristic may suggest a default — **the user always confirms**.
    - Roughly how many distinct pieces of work / stories? (ranges are fine)
    - Multiple teams or just one builder?
    - Hard compliance / security / infra requirements?
+   - Preferred artifact language, if different from the conversation language.
 
 3. **Suggest a track.** Run the helper to print the three tracks and a suggested
    default, then state your recommendation and **ask the user to confirm or override**:
@@ -82,9 +96,13 @@ call. A heuristic may suggest a default — **the user always confirms**.
      --output "bmad-output"
    ```
 
+   If the user asks for XMM-style `bmad/*.yaml` status files, add `--compat-xmm`.
+
    The script is **idempotent**: it creates missing folders and seeds any missing
    template files, but never overwrites `decision-log.md` or `project-context.md`
    if they already contain content. It always (re)writes `config.yaml`.
+   In compatibility mode, it always (re)writes `bmad/project.yaml` and seeds
+   `bmad/workflow-status.yaml` plus `bmad/sprint-status.yaml` only if missing/empty.
 
 5. **Open the constitution.** Walk the user through filling the first sections of
    `project-context.md` (project goal, primary users, constraints, non-goals). This
@@ -105,6 +123,21 @@ call. A heuristic may suggest a default — **the user always confirms**.
   ```bash
   bash "../bmad-init/scripts/init-project.sh" --validate --output "bmad-output"
   ```
+
+## Language handling
+
+Follow the user's language for conversation. Store artifact language in
+`config.yaml` under `languages.document_output`. If the user has not specified an
+artifact language, ask once or default to the language of the source material. Keep
+file names, YAML keys, JSON keys, and status values stable and English.
+
+## XMM compatibility mode
+
+Use `--compat-xmm` only when the user explicitly wants XMM-style state files or is
+migrating from a workflow that expects `bmad/workflow-status.yaml`. Downstream
+skills should continue to treat `bmad-output/config.yaml` as native source of truth.
+`bmad-help` may read `bmad/workflow-status.yaml` as supplemental context when it
+exists.
 
 ## Guardrails
 

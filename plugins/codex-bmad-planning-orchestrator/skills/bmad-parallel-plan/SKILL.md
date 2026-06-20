@@ -2,12 +2,13 @@
 name: bmad-parallel-plan
 description: |
   Turns ready-for-dev stories into a conflict-free parallelization-plan.md using
-  dependencies and Owned File/Module Scope. Use when the user says "plan parallel
-  work", "which stories can run in parallel", "parallelize the backlog", "build
-  the wave plan", "parallelization plan", "conflict-free workstreams", "split
-  into worktrees", "dependency graph for the stories", "merge order", or "fan
-  this backlog out to multiple dev agents". Plans parallelism only; never runs
-  agents, creates worktrees, writes code, runs tests, or performs git operations.
+  dependencies and Owned File/Module Scope. Use for "$bmad-parallel-plan",
+  "bmad:parallel-plan", or when the user says "plan parallel work", "which stories
+  can run in parallel", "parallelize the backlog", "build the wave plan",
+  "parallelization plan", "conflict-free workstreams", "split into worktrees",
+  "dependency graph for the stories", "merge order", or "fan this backlog out to
+  multiple dev agents". Plans parallelism only; never runs agents, creates
+  worktrees, writes code, runs tests, or performs git operations.
 ---
 
 # BMAD Parallel Plan

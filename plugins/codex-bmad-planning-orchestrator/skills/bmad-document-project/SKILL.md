@@ -2,12 +2,13 @@
 name: bmad-document-project
 description: |
   Reads an existing codebase to produce bmad-output/project-documentation.md for
-  brownfield planning. Use when the user says "document this codebase", "document
-  the project", "scan the existing code", "brownfield planning", "map what's
-  already built", "document current state", "capture the current architecture",
-  "understand the existing system before planning", or "write project-documentation.md".
-  Supports Create, Update, and Validate. Reads code but never modifies it, runs
-  tests, lints, builds, or writes application code.
+  brownfield planning. Use for "$bmad-document-project", "bmad:document-project",
+  or when the user says "document this codebase", "document the project", "scan
+  the existing code", "brownfield planning", "map what's already built", "document
+  current state", "capture the current architecture", "understand the existing
+  system before planning", or "write project-documentation.md". Supports Create,
+  Update, and Validate. Reads code but never modifies it, runs tests, lints, builds,
+  or writes application code.
 ---
 
 # BMAD Document Project

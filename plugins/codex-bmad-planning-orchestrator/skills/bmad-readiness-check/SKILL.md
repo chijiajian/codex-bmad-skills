@@ -2,12 +2,13 @@
 name: bmad-readiness-check
 description: |
   Validates cohesion across BMAD planning artifacts before implementation handoff,
-  returning PASS, CONCERNS, or FAIL. Use when the user says "check if we're ready
-  to build", "are we ready to implement", "validate planning", "gate check",
-  "readiness check", "run the solutioning gate", "check implementation readiness",
-  "is the architecture complete", "do requirements match architecture", "sign off
-  on planning", or "validate PRD against architecture". Validate-only; never
-  touches code.
+  returning PASS, CONCERNS, or FAIL. Use for "$bmad-readiness-check",
+  "bmad:readiness-check", or when the user says "check if we're ready to build",
+  "are we ready to implement", "validate planning", "gate check", "readiness
+  check", "run the solutioning gate", "check implementation readiness", "is the
+  architecture complete", "do requirements match architecture", "sign off on
+  planning", or "validate PRD against architecture". Validate-only; never touches
+  code.
 ---
 
 # BMAD Readiness Check
