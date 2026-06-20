@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Document Project"
+  short_description: "Document brownfield project state"
+  default_prompt: "Use $bmad-document-project to document the current state of this brownfield project."

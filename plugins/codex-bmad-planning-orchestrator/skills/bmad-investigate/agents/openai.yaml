@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Investigate"
+  short_description: "Triage issues into fix stories"
+  default_prompt: "Use $bmad-investigate to investigate an issue and produce a planning case file."

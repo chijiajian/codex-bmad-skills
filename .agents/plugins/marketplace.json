@@ -1,0 +1,20 @@
+{
+  "name": "codex-bmad-skills",
+  "interface": {
+    "displayName": "Codex BMAD Skills"
+  },
+  "plugins": [
+    {
+      "name": "codex-bmad-planning-orchestrator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-bmad-planning-orchestrator"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

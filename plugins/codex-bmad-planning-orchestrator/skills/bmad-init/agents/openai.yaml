@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Init"
+  short_description: "Initialize a BMAD planning workspace"
+  default_prompt: "Use $bmad-init to start a BMAD planning workspace for this project."

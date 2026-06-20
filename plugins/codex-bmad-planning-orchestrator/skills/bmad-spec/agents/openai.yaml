@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Spec"
+  short_description: "Create the five-field SPEC kernel"
+  default_prompt: "Use $bmad-spec to turn my idea into a five-field SPEC.md planning kernel."

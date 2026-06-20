@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Correct Course"
+  short_description: "Re-plan after scope changes"
+  default_prompt: "Use $bmad-correct-course to assess a scope change and update the planning artifacts."

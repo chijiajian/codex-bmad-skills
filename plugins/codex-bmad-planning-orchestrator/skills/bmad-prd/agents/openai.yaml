@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD PRD"
+  short_description: "Create and validate planning PRDs"
+  default_prompt: "Use $bmad-prd to draft or validate a PRD for this project."

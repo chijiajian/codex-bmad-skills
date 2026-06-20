@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Research"
+  short_description: "Produce cited BMAD research reports"
+  default_prompt: "Use $bmad-research to research this market or technical domain with citations."
