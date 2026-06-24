@@ -144,8 +144,14 @@ animations are decorative vs. meaningful.
 
 ## Subagent strategy
 
-Use this strategy only when subagent tooling is available. Otherwise execute the
-listed slices sequentially in the main context and keep the same outputs.
+Subagents, when the capability is available, are an important part of this
+workflow. Use them as directed by this section.
+
+If the current Codex runtime requires explicit user authorization for subagents,
+ask once before launching any subagent and apply that answer to the whole
+workflow run. If authorization is denied, or subagent tooling is unavailable,
+execute the listed slices sequentially in the main context and keep the same
+outputs.
 
 For projects with more than four major journeys, fan out parallel subagents:
 

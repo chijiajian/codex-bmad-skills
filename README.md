@@ -88,6 +88,7 @@ Recommended entry points:
 - [Getting started](docs/getting-started.md)
 - [Commands and intents](docs/commands.md)
 - [Configuration](docs/configuration.md)
+- [Codex subagent authorization audit](docs/subagent-authorization-audit.md)
 
 ## Examples
 

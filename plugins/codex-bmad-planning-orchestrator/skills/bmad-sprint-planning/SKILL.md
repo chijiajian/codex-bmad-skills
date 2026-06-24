@@ -131,8 +131,14 @@ Track is confirmed with the user before generating the status file.
 
 ## Subagent Strategy
 
-Use this strategy only when subagent tooling is available. Otherwise execute the
-listed slices sequentially in the main context and keep the same outputs.
+Subagents, when the capability is available, are an important part of this
+workflow. Use them as directed by this section.
+
+If the current Codex runtime requires explicit user authorization for subagents,
+ask once before launching any subagent and apply that answer to the whole
+workflow run. If authorization is denied, or subagent tooling is unavailable,
+execute the listed slices sequentially in the main context and keep the same
+outputs.
 
 **Pattern:** Parallel dependency analysis
 **Use when:** 15+ stories across 3+ epics
