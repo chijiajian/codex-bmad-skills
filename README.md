@@ -1,11 +1,14 @@
 # Codex BMAD Skills
 
+[![CI](https://github.com/chijiajian/codex-bmad-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/chijiajian/codex-bmad-skills/actions/workflows/ci.yml)
+
 A Codex port of **BMAD Planning & Orchestrator**: a planning-only harness for the BMAD Method. It helps Codex create product briefs, SPECs, PRDs, UX docs, architecture, epics, ready-for-dev stories, conflict-free parallel wave plans, and handoff manifests.
 
 This repository is structured like a Codex marketplace repo:
 
 ```text
 codex-bmad-skills/
+├── .github/workflows/ci.yml
 ├── .agents/plugins/marketplace.json
 ├── plugins/codex-bmad-planning-orchestrator/
 │   ├── .codex-plugin/plugin.json

@@ -69,9 +69,7 @@ for skill in sorted((root / 'skills').iterdir()):
         errors.append(f'{skill.name}: missing SKILL.md')
         continue
     text = skill_md.read_text()
-    match = re.match(r'^---
-(.*?)
----', text, re.S)
+    match = re.match(r'^---\n(.*?)\n---', text, re.S)
     if not match:
         errors.append(f'{skill.name}: invalid frontmatter')
         continue
@@ -81,15 +79,13 @@ for skill in sorted((root / 'skills').iterdir()):
         errors.append(f'{skill.name}: missing or invalid name')
     elif name_match.group(1) != skill.name:
         errors.append(f'{skill.name}: frontmatter name mismatch')
-    if not re.search(r'^description:\s*(\||>|[^
-]+)', fm, re.M):
+    if not re.search(r'^description:\s*(\||>|[^\n]+)', fm, re.M):
         errors.append(f'{skill.name}: missing description')
     agent_yaml = skill / 'agents' / 'openai.yaml'
     if not agent_yaml.is_file():
         errors.append(f'{skill.name}: missing agents/openai.yaml')
 if errors:
-    raise SystemExit('
-'.join(errors))
+    raise SystemExit('\n'.join(errors))
 print('Built-in skill checks passed')
 PYVALIDATESKILLS
 fi
