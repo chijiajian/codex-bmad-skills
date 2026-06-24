@@ -133,8 +133,12 @@ if echo "$body_content" | grep -qiE '^##[[:space:]]+When to (Use|use)( This Skil
 fi
 
 if echo "$body_content" | grep -qiE '^##[[:space:]]+Subagent'; then
-    if ! echo "$body_content" | grep -q "subagent tooling is available"; then
+    if ! echo "$body_content" | grep -q "subagent tooling is unavailable"; then
         echo -e "${YELLOW}  Warning: Subagent Strategy lacks a no-subagent fallback path.${NC}"
+        ((warnings++))
+    fi
+    if ! echo "$body_content" | grep -q "explicit user authorization for subagents"; then
+        echo -e "${YELLOW}  Warning: Subagent Strategy lacks an explicit authorization guardrail.${NC}"
         ((warnings++))
     fi
 fi

@@ -69,6 +69,15 @@ Always clarify which intent applies if ambiguous; never blindly one-shot.
 
 ## Subagent strategy
 
+Subagents, when the capability is available, are an important part of this
+workflow. Use them as directed by this section.
+
+If the current Codex runtime requires explicit user authorization for subagents,
+ask once before launching any subagent and apply that answer to the whole
+workflow run. If authorization is denied, or subagent tooling is unavailable,
+execute the listed slices sequentially in the main context and keep the same
+outputs.
+
 | Agent | Task | Output |
 |-------|------|--------|
 | Agent 1 | {{agent_1_task}} | `bmad-output/{{agent_1_output}}` |
