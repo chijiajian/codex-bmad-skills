@@ -34,6 +34,8 @@ READY_COUNT="$(get READY_COUNT)"
 BEYOND_COUNT="$(get BEYOND_COUNT)"
 HAS_COMPAT_WORKFLOW="$(get HAS_COMPAT_WORKFLOW)"
 COMPAT_TRACK="$(get COMPAT_TRACK)"
+HAS_MIGRATION_SOURCE="$(get HAS_MIGRATION_SOURCE)"
+MIGRATION_HINTS="$(get MIGRATION_HINTS)"
 
 # Track flags
 needs_arch=0; needs_epics=0; needs_prd=0
@@ -46,7 +48,11 @@ esac
 
 SKILL=""; WHY=""; NOTE=""
 
-if [ "${HAS_CTX:-0}" != "1" ]; then
+if [ "${HAS_CTX:-0}" != "1" ] && [ "${HAS_MIGRATION_SOURCE:-0}" = "1" ]; then
+  SKILL="bmad-migrate"
+  WHY="The project is not initialized, but existing Claude/BMAD planning artifacts were detected. Run migration discovery before creating a fresh workspace."
+  NOTE="Detected: ${MIGRATION_HINTS}. Start with dry-run; do not overwrite existing planning artifacts."
+elif [ "${HAS_CTX:-0}" != "1" ]; then
   SKILL="bmad-init"
   WHY="No project-context.md — the project is not initialized. Establish project context and CONFIRM the track."
   NOTE="Analysis (bmad-product-brief / bmad-research / bmad-brainstorm) is optional; offer it but do not require it."

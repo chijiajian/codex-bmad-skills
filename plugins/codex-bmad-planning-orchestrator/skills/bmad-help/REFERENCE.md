@@ -25,6 +25,22 @@ Read compatibility state only after checking native artifacts:
 3. Surface the compatibility files in the status summary so the user knows they exist.
 4. Do not require compatibility files for normal operation.
 
+## Migration source hints
+
+If native `bmad-output/project-context.md` is missing, check for common Claude BMAD
+source locations before recommending a fresh init:
+
+- `.claude/`
+- `.bmad-core/`
+- `docs/prd.md`
+- `docs/architecture.md`
+- `docs/epics.md`
+- `docs/stories/`
+- a non-target `bmad-output/`
+
+When any are present, recommend `bmad-migrate`. Migration starts in dry-run mode and
+only applies changes after user confirmation.
+
 ## Phase map (canonical order)
 
 ```

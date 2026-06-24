@@ -72,6 +72,23 @@ elif [ "$HAS_COMPAT_PROJECT" -eq 0 ]; then
   COMPAT_TRACK="$(read_track_from_yaml "$COMPAT_PROJECT")"
 fi
 
+HAS_MIGRATION_SOURCE=0
+MIGRATION_HINTS=""
+for p in \
+  ".claude" \
+  ".bmad-core" \
+  "docs/prd.md" \
+  "docs/architecture.md" \
+  "docs/epics.md" \
+  "docs/stories" \
+  "bmad-output"
+do
+  if [ -e "$p" ] && [ "$p" != "$OUT" ]; then
+    HAS_MIGRATION_SOURCE=1
+    MIGRATION_HINTS="${MIGRATION_HINTS}${MIGRATION_HINTS:+, }${p}"
+  fi
+done
+
 echo ""
 echo -e "${BLUE}== BMAD Planning State ==${NC}"
 echo -e "${BLUE}Output folder:${NC} ${OUT}"
@@ -79,6 +96,9 @@ echo ""
 
 if [ ! -d "$OUT" ]; then
   echo -e "${YELLOW}Output folder '${OUT}' does not exist — project not initialized.${NC}"
+  if [ "$HAS_MIGRATION_SOURCE" -eq 1 ]; then
+    echo -e "${YELLOW}Possible Claude BMAD migration source detected: ${MIGRATION_HINTS}${NC}"
+  fi
   if [ "$HAS_COMPAT_PROJECT" -eq 0 ] || [ "$HAS_COMPAT_WORKFLOW" -eq 0 ] || [ "$HAS_COMPAT_SPRINT" -eq 0 ]; then
     echo ""
     echo -e "${BLUE}Compatibility (optional):${NC}"
@@ -93,6 +113,8 @@ if [ ! -d "$OUT" ]; then
   echo "TRACK=${COMPAT_TRACK}"
   echo "HAS_COMPAT_WORKFLOW=$([ "$HAS_COMPAT_WORKFLOW" -eq 0 ] && echo 1 || echo 0)"
   echo "COMPAT_TRACK=${COMPAT_TRACK}"
+  echo "HAS_MIGRATION_SOURCE=${HAS_MIGRATION_SOURCE}"
+  echo "MIGRATION_HINTS=${MIGRATION_HINTS}"
   exit 0
 fi
 
@@ -216,3 +238,5 @@ echo "READY_COUNT=${READY_COUNT}"
 echo "BEYOND_COUNT=${BEYOND_COUNT}"
 echo "HAS_COMPAT_WORKFLOW=$([ $HAS_COMPAT_WORKFLOW -eq 0 ] && echo 1 || echo 0)"
 echo "COMPAT_TRACK=${COMPAT_TRACK}"
+echo "HAS_MIGRATION_SOURCE=${HAS_MIGRATION_SOURCE}"
+echo "MIGRATION_HINTS=${MIGRATION_HINTS}"

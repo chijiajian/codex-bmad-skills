@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Migrate"
+  short_description: "Migrate Claude BMAD planning artifacts"
+  default_prompt: "Use $bmad-migrate to scan an existing Claude BMAD project and produce a safe migration plan."

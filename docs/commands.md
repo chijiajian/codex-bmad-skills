@@ -7,6 +7,7 @@ write `bmad:*` intent phrases in normal chat. `/bmad` is not created by this pac
 | --- | --- | --- |
 | `bmad:help`, `bmad:status`, `bmad:next` | `$bmad-help` | Next recommended planning skill |
 | `bmad:init` | `$bmad-init` | `bmad-output/config.yaml`, `decision-log.md`, `project-context.md` |
+| `bmad:migrate` | `$bmad-migrate` | Claude BMAD migration report and optional migrated artifacts |
 | `bmad:brainstorm` | `$bmad-brainstorm` | `brainstorming-report.md` |
 | `bmad:research` | `$bmad-research` | `research-report.md` |
 | `bmad:product-brief`, `bmad:brief` | `$bmad-product-brief` | `product-brief.md` |
@@ -30,6 +31,8 @@ write `bmad:*` intent phrases in normal chat. `/bmad` is not created by this pac
 
 - Use `$bmad-help` when you are unsure which planning skill should run next.
 - Use `$bmad-init` before downstream planning if no `bmad-output/config.yaml` exists.
+- Use `$bmad-migrate` before `$bmad-init` when a project already has Claude BMAD
+  artifacts from `aj-geddes/claude-code-bmad-skills` or older Claude BMAD skills.
 - Use `bmad:*` phrases when coming from another BMAD workflow; Codex treats them as
   natural language triggers.
 - Implementation, code review, test execution, and deployment stay outside this package.

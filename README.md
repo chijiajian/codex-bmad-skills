@@ -37,12 +37,13 @@ After installation, start Codex and use the skills by name, for example:
 ```text
 Use $bmad-help to inspect my planning state and recommend the next BMAD step.
 Use $bmad-init to start a BMAD planning workspace.
+Use $bmad-migrate to scan and migrate an existing Claude BMAD project.
 Use $bmad-prd to draft a PRD from my product brief.
 ```
 
 You can also use `bmad:*` intent phrases in normal chat, such as `bmad:status`,
-`bmad:init`, or `bmad:prd`. These are skill-discovery phrases, not slash commands.
-This package does not create `/bmad`.
+`bmad:init`, `bmad:migrate`, or `bmad:prd`. These are skill-discovery phrases, not
+slash commands. This package does not create `/bmad`.
 
 ## Documentation
 
@@ -82,6 +83,7 @@ The validator checks the Codex plugin manifest, all skill frontmatter, and BMAD'
 
 - `bmad-help` — next-step router
 - `bmad-init` — initialize a BMAD planning workspace
+- `bmad-migrate` — migrate Claude BMAD planning artifacts into Codex BMAD layout
 - `bmad-brainstorm`, `bmad-research`, `bmad-product-brief`, `bmad-prfaq`, `bmad-spec`
 - `bmad-prd`, `bmad-tech-spec`
 - `bmad-ux`, `bmad-architecture`, `bmad-epics-and-stories`, `bmad-readiness-check`

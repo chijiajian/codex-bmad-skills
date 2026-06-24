@@ -3,11 +3,11 @@
   "version": "0.5.0",
   "description": "A Codex planning and orchestration harness for the BMAD Method by the BMAD Code Organization. It facilitates product briefs, PRDs, architecture, epics, ready-for-dev stories, conflict-free parallel work planning, and tool-agnostic handoff. It plans and orchestrates; it never writes application code.",
   "author": {
-    "name": "AJ Geddes",
-    "url": "https://github.com/aj-geddes"
+    "name": "Chijiajian",
+    "url": "https://github.com/chijiajian"
   },
-  "homepage": "https://aj-geddes.github.io/claude-code-bmad-skills",
-  "repository": "https://github.com/aj-geddes/claude-code-bmad-skills",
+  "homepage": "https://github.com/chijiajian/codex-bmad-skills",
+  "repository": "https://github.com/chijiajian/codex-bmad-skills",
   "license": "MIT",
   "keywords": [
     "bmad",
@@ -26,17 +26,18 @@
     "displayName": "BMAD Planning & Orchestrator",
     "shortDescription": "Plan and hand off BMAD workstreams.",
     "longDescription": "BMAD Planning & Orchestrator brings the BMAD planning lifecycle to Codex: brainstorm, research, product brief, SPEC, PRD, UX, architecture, epics, ready-for-dev stories, conflict-free wave planning, and handoff manifests. It stops at planning artifacts and leaves implementation to dev tools.",
-    "developerName": "AJ Geddes",
+      "developerName": "Chijiajian",
     "category": "Productivity",
     "capabilities": [
       "Planning",
       "Write"
     ],
-    "defaultPrompt": [
-      "Use $bmad-help to inspect my planning state and recommend the next BMAD step.",
-      "Use $bmad-init to start a BMAD planning workspace for this project.",
-      "Use $bmad-prd to draft a PRD from my product brief."
-    ],
+      "defaultPrompt": [
+        "Use $bmad-help to inspect my planning state and recommend the next BMAD step.",
+        "Use $bmad-init to start a BMAD planning workspace for this project.",
+        "Use $bmad-migrate to scan and migrate an existing Claude BMAD project.",
+        "Use $bmad-prd to draft a PRD from my product brief."
+      ],
     "brandColor": "#F97316"
   }
 }

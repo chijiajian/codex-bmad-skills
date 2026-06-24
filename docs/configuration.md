@@ -67,6 +67,22 @@ bmad/
 `bmad/workflow-status.yaml` as supplemental context when it exists, but normal operation
 does not require it.
 
+## Claude BMAD Migration
+
+Use `bmad:migrate` when a project already contains planning artifacts from
+`aj-geddes/claude-code-bmad-skills` or older Claude BMAD skills.
+
+The migration skill recognizes:
+
+- `bmad-output/` from the Claude Code plugin.
+- `docs/prd.md`, `docs/architecture.md`, `docs/epics.md`, and `docs/stories/`.
+- Supplemental `bmad/*.yaml` state.
+- `.claude/` and `.bmad-core/` remnants from older local installs.
+
+Dry-run mode is the default. Applying a migration copies only missing planning
+artifacts and creates minimal `config.yaml`, `project-context.md`, and
+`decision-log.md` stubs when needed. Existing target files are not overwritten.
+
 ## Scope Boundary
 
 This repository stays planning-only. It may read existing code for brownfield planning,

@@ -2,11 +2,12 @@
 name: bmad-help
 description: |
   Routes BMAD planning sessions by scanning bmad-output state plus optional
-  bmad/workflow-status.yaml compatibility state, then recommending the next single
-  BMAD skill. Use when the user asks "what's next", "where am I", "what's my
-  status", "continue", "resume planning", "which skill should I run", "what BMAD
-  step is next", or types "$bmad-help", "bmad:help", "bmad:status", "bmad:next",
-  "bmad status", or "status". Routes only; never writes planning documents.
+  bmad/workflow-status.yaml compatibility state, and Claude BMAD migration hints,
+  then recommending the next single BMAD skill. Use when the user asks "what's
+  next", "where am I", "what's my status", "continue", "resume planning",
+  "which skill should I run", "what BMAD step is next", or types "$bmad-help",
+  "bmad:help", "bmad:status", "bmad:next", "bmad status", or "status". Routes
+  only; never writes planning documents.
 ---
 
 # BMAD Help — Orchestration Spine
@@ -44,6 +45,10 @@ first recommendation is always to establish them.
 When `bmad/workflow-status.yaml` exists, treat it as optional compatibility state
 for users coming from XMM-style workflows. Native `bmad-output/` artifacts remain
 authoritative; compatibility state can fill gaps such as an otherwise missing track.
+
+When no native workspace exists but `.claude/`, `.bmad-core/`, `docs/prd.md`,
+`docs/architecture.md`, `docs/stories/`, or a non-target `bmad-output/` is detected,
+recommend `bmad-migrate` before `bmad-init`.
 
 > Implementation itself (writing code, running tests) is OUT OF SCOPE. The last artifact
 > this plugin produces is a ready-for-dev story file or handoff manifest, passed to an
@@ -93,6 +98,7 @@ Evaluate in order; recommend the first unmet step for the active track.
 
 1. No `project-context.md` → establish project context (run `bmad-init`, or
    `bmad-product-brief` if the user opts into Analysis). Confirm the track.
+   If Claude BMAD artifacts are detected, recommend `bmad-migrate` first.
 2. No `prd.md` and no `tech-spec.md` →
    - Quick Flow → `bmad-tech-spec` (tech-spec).
    - BMad Method / Enterprise → `bmad-prd` (PRD).
