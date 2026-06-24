@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate plugin and skills
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Validate plugin and skills
+        run: ./scripts/validate.sh
+
+      - name: Check shell syntax
+        run: |
+          find . -name '*.sh' -print0 | xargs -0 -n1 bash -n
+
+      - name: Parse JSON files
+        run: |
+          find . -name '*.json' -print0 | xargs -0 -n1 python3 -m json.tool >/dev/null
+
+      - name: Parse OpenAI YAML metadata
+        run: |
+          ruby -e 'require "yaml"; Dir["plugins/codex-bmad-planning-orchestrator/skills/*/agents/openai.yaml"].each { |f| YAML.load_file(f) }'
+
+      - name: Compile Python helpers
+        run: |
+          find . -name '*.py' -print0 | xargs -0 env PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/pycache" python3 -m py_compile
+
+      - name: Smoke test skills-only install
+        run: |
+          export CODEX_HOME="${RUNNER_TEMP}/codex-home"
+          ./scripts/install-skills.sh
+          test -f "${CODEX_HOME}/skills/bmad-help/SKILL.md"
+          test -d "${CODEX_HOME}/skills/_bmad-shared/scripts"
+          test -d "${CODEX_HOME}/skills/_bmad-shared/references"
+          if grep -R -E '\.\./\.\./(scripts|references)/' "${CODEX_HOME}/skills"/bmad-*; then
+            echo "Found stale relative shared-resource references after install." >&2
+            exit 1
+          fi
