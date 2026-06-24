@@ -19,9 +19,11 @@ codex-bmad-skills/
 
 ## Install
 
-Recommended install, as a Codex plugin bundle:
+Clone the GitHub repository, then install the Codex plugin bundle:
 
 ```sh
+git clone git@github.com:chijiajian/codex-bmad-skills.git
+cd codex-bmad-skills
 ./install.sh
 ```
 
