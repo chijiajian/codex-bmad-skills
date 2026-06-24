@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Architecture"
+  short_description: "Plan architecture and ADR coverage"
+  default_prompt: "Use $bmad-architecture to create architecture.md and ADRs from the PRD."

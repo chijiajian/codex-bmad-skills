@@ -1,0 +1,39 @@
+# Optional XMM-style BMAD workflow status.
+# Supplemental only: native routing still uses {{OUTPUT_FOLDER}}/.
+
+compatibility: "xmm-bmad"
+generated_at: "{{TIMESTAMP}}"
+last_updated: "{{TIMESTAMP}}"
+
+project:
+  name: "{{PROJECT_NAME}}"
+  track: "{{PROJECT_TRACK}}"
+
+workflow:
+  status: "initialized"
+  current_phase: "initialization"
+  next_skill: "bmad-help"
+  native_output_folder: "{{OUTPUT_FOLDER}}"
+
+artifacts:
+  project_context:
+    path: "{{OUTPUT_FOLDER}}/project-context.md"
+    status: "seeded"
+  decision_log:
+    path: "{{OUTPUT_FOLDER}}/decision-log.md"
+    status: "seeded"
+  prd:
+    path: "{{OUTPUT_FOLDER}}/prd.md"
+    status: "missing"
+  tech_spec:
+    path: "{{OUTPUT_FOLDER}}/tech-spec.md"
+    status: "missing"
+  architecture:
+    path: "{{OUTPUT_FOLDER}}/architecture.md"
+    status: "missing"
+  epics:
+    path: "{{OUTPUT_FOLDER}}/epics.md"
+    status: "missing"
+  stories:
+    path: "{{OUTPUT_FOLDER}}/stories"
+    status: "missing"

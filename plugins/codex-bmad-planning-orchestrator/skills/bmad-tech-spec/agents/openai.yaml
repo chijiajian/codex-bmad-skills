@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Tech Spec"
+  short_description: "Write Quick Flow technical specs"
+  default_prompt: "Use $bmad-tech-spec to write a lightweight Quick Flow technical spec."

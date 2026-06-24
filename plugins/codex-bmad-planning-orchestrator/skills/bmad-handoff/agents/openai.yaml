@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Handoff"
+  short_description: "Emit the dev handoff manifest"
+  default_prompt: "Use $bmad-handoff to generate a handoff manifest for ready-for-dev stories."

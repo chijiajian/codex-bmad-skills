@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD PRFAQ"
+  short_description: "Draft working-backwards PRFAQs"
+  default_prompt: "Use $bmad-prfaq to draft a press release and FAQ for this product."

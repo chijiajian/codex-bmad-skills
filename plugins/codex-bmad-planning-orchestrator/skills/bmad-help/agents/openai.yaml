@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Help"
+  short_description: "Route to the next BMAD planning step"
+  default_prompt: "Use $bmad-help to inspect my planning state and recommend the next BMAD step."

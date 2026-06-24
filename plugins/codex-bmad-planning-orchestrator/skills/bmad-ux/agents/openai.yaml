@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD UX"
+  short_description: "Create UX contracts and journey docs"
+  default_prompt: "Use $bmad-ux to produce UX design and experience documents for this UI project."

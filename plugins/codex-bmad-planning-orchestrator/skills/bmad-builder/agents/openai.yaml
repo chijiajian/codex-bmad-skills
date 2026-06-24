@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Builder"
+  short_description: "Scaffold BMAD planning skills"
+  default_prompt: "Use $bmad-builder to scaffold or validate a custom BMAD planning skill."

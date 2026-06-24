@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Epics And Stories"
+  short_description: "Shard plans into ready stories"
+  default_prompt: "Use $bmad-epics-and-stories to create epics and ready-for-dev story files."

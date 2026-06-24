@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Readiness Check"
+  short_description: "Audit readiness before handoff"
+  default_prompt: "Use $bmad-readiness-check to audit whether the planning artifacts are ready for dev handoff."

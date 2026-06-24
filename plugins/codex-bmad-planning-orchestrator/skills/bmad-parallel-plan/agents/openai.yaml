@@ -1,0 +1,4 @@
+interface:
+  display_name: "BMAD Parallel Plan"
+  short_description: "Build conflict-free parallel waves"
+  default_prompt: "Use $bmad-parallel-plan to create a conflict-free parallelization plan."
