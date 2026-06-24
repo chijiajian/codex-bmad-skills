@@ -12,6 +12,7 @@ codex-bmad-skills/
 │   ├── skills/
 │   ├── scripts/
 │   └── references/
+├── examples/
 ├── install.sh
 ├── uninstall.sh
 └── scripts/
@@ -34,24 +35,60 @@ codex plugin marketplace add "$PWD"
 codex plugin add codex-bmad-planning-orchestrator@codex-bmad-skills
 ```
 
-After installation, start Codex and use the skills by name, for example:
+After installation, start a new Codex session or restart Codex so the plugin
+metadata is loaded.
+
+## Usage
+
+Use any skill from the catalog by name. These are common examples, not the
+complete list:
 
 ```text
-Use $bmad-help to inspect my planning state and recommend the next BMAD step.
+Use $bmad-help to inspect my planning state.
 Use $bmad-init to start a BMAD planning workspace.
-Use $bmad-migrate to scan and migrate an existing Claude BMAD project.
-Use $bmad-prd to draft a PRD from my product brief.
+Use $bmad-migrate to scan an existing Claude BMAD project.
+Use $bmad-parallel-plan to build a conflict-free wave plan.
+Use $bmad-architecture to draft the system architecture.
+Use $bmad-handoff to emit a handoff manifest for implementation tools.
 ```
 
-You can also use `bmad:*` intent phrases in normal chat, such as `bmad:status`,
-`bmad:init`, `bmad:migrate`, or `bmad:prd`. These are skill-discovery phrases, not
-slash commands. This package does not create `/bmad`.
+Or use `bmad:*` intent phrases in normal chat. These cover the main BMAD
+workflow stages:
+
+```text
+bmad:status
+bmad:init
+bmad:migrate
+bmad:product-brief
+bmad:prd
+bmad:architecture
+bmad:stories
+bmad:sprint-plan
+bmad:parallel-plan
+bmad:handoff
+```
+
+These are skill-discovery phrases, not slash commands. This package does not
+create `/bmad`. See [Commands and intents](docs/commands.md) for the complete
+intent mapping, and see [Skill Catalog](#skill-catalog) for every installed skill
+name you can invoke directly.
+
+Recommended entry points:
+
+- New project: `bmad:status` -> `bmad:init`
+- Claude BMAD project: `bmad:migrate` -> `bmad:status`
+- Existing BMAD workspace: `bmad:status`
+- Ready-for-dev story backlog: `bmad:sprint-plan` -> `bmad:parallel-plan` -> `bmad:handoff`
 
 ## Documentation
 
 - [Getting started](docs/getting-started.md)
 - [Commands and intents](docs/commands.md)
 - [Configuration](docs/configuration.md)
+
+## Examples
+
+- [Parallelization plan example](examples/parallelization-plan.example.md)
 
 ## Skills-only install
 
@@ -98,4 +135,7 @@ This package plans and orchestrates only. It does not write application code, ru
 
 ## Attribution
 
-The BMAD Method is created and maintained by the BMAD Code Organization. This repository is an independent Codex integration and does not imply endorsement. See [ATTRIBUTION.md](ATTRIBUTION.md).
+The BMAD Method is created and maintained by the BMAD Code Organization. This
+repository is an independent Codex integration and does not imply endorsement.
+This package also adapts ideas and artifact shapes from AJ Geddes'
+MIT-licensed Claude Code BMAD plugin. See [ATTRIBUTION.md](ATTRIBUTION.md).
