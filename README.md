@@ -1,27 +1,36 @@
 # Codex BMAD Skills
 
 [![CI](https://github.com/chijiajian/codex-bmad-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/chijiajian/codex-bmad-skills/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/chijiajian/codex-bmad-skills?sort=semver)](https://github.com/chijiajian/codex-bmad-skills/releases)
+[![License](https://img.shields.io/github/license/chijiajian/codex-bmad-skills)](LICENSE)
 
-A Codex port of **BMAD Planning & Orchestrator**: a planning-only harness for the BMAD Method. It helps Codex create product briefs, SPECs, PRDs, UX docs, architecture, epics, ready-for-dev stories, conflict-free parallel wave plans, and handoff manifests.
+**Codex BMAD Skills is a Codex-native port of BMAD Planning & Orchestrator:
+a planning-only plugin that turns BMAD Method workflows into discoverable Codex
+skills for product discovery, PRDs, architecture, UX, story sharding, parallel
+planning, and implementation handoff.**
 
-This repository is structured like a Codex marketplace repo:
+Use it when you want Codex to structure product and engineering planning work
+without writing application code. The plugin produces durable BMAD artifacts,
+keeps planning boundaries explicit, and prepares ready-for-dev stories or
+handoff manifests for implementation tools.
 
-```text
-codex-bmad-skills/
-├── .github/workflows/ci.yml
-├── .agents/plugins/marketplace.json
-├── plugins/codex-bmad-planning-orchestrator/
-│   ├── .codex-plugin/plugin.json
-│   ├── skills/
-│   ├── scripts/
-│   └── references/
-├── examples/
-├── install.sh
-├── uninstall.sh
-└── scripts/
-```
+## Why This Exists
 
-## Install
+- **Codex-native BMAD workflows:** BMAD planning stages are exposed as
+  `$bmad-*` skills and `bmad:*` intent phrases.
+- **Planning-only by design:** the plugin creates planning artifacts, not
+  application code, builds, tests, deployments, or implementation reviews.
+- **Ready handoff artifacts:** output includes PRDs, architecture, UX docs,
+  epics, ready-for-dev stories, parallel wave plans, and handoff manifests.
+- **Brownfield-friendly:** migration support helps move older Claude BMAD
+  planning artifacts into the Codex BMAD layout.
+- **Codex runtime guardrails:** subagent workflows include an ask-once
+  authorization guardrail and a sequential fallback when subagents are denied or
+  unavailable.
+
+Latest release: **v1.0.1**. See [Release Notes](CHANGELOG.md).
+
+## 60-Second Start
 
 Clone the GitHub repository, then install the Codex plugin bundle:
 
@@ -41,7 +50,33 @@ codex plugin add codex-bmad-planning-orchestrator@codex-bmad-skills
 After installation, start a new Codex session or restart Codex so the plugin
 metadata is loaded.
 
-## Usage
+Then ask Codex:
+
+```text
+bmad:status
+bmad:init
+bmad:product-brief
+bmad:prd
+bmad:architecture
+bmad:stories
+bmad:parallel-plan
+bmad:handoff
+```
+
+These are skill-discovery phrases, not slash commands. This package does not
+create `/bmad`.
+
+## Common Workflows
+
+| Scenario | Start with | Continue with |
+| --- | --- | --- |
+| New project | `bmad:status` -> `bmad:init` | `bmad:product-brief` -> `bmad:prd` -> `bmad:architecture` -> `bmad:stories` |
+| Small feature | `bmad:init` | `bmad:tech-spec` -> `bmad:stories` |
+| Claude BMAD project | `bmad:migrate` -> `bmad:status` | Next recommended BMAD skill |
+| Brownfield planning | `bmad:document-project` | `bmad:prd` or `bmad:tech-spec` |
+| Parallel implementation prep | `bmad:sprint-plan` | `bmad:parallel-plan` -> `bmad:handoff` |
+
+## Usage Details
 
 Use any skill from the catalog by name. These are common examples, not the
 complete list:
@@ -71,17 +106,9 @@ bmad:parallel-plan
 bmad:handoff
 ```
 
-These are skill-discovery phrases, not slash commands. This package does not
-create `/bmad`. See [Commands and intents](docs/commands.md) for the complete
-intent mapping, and see [Skill Catalog](#skill-catalog) for every installed skill
-name you can invoke directly.
-
-Recommended entry points:
-
-- New project: `bmad:status` -> `bmad:init`
-- Claude BMAD project: `bmad:migrate` -> `bmad:status`
-- Existing BMAD workspace: `bmad:status`
-- Ready-for-dev story backlog: `bmad:sprint-plan` -> `bmad:parallel-plan` -> `bmad:handoff`
+See [Commands and intents](docs/commands.md) for the complete intent mapping,
+and see [Skill Catalog](#skill-catalog) for every installed skill name you can
+invoke directly.
 
 ## Documentation
 
@@ -89,6 +116,7 @@ Recommended entry points:
 - [Commands and intents](docs/commands.md)
 - [Configuration](docs/configuration.md)
 - [Codex subagent authorization audit](docs/subagent-authorization-audit.md)
+- [Release notes](CHANGELOG.md)
 
 ## Examples
 
@@ -117,6 +145,25 @@ Remove the skills-only install with:
 ```
 
 The validator checks the Codex plugin manifest, all skill frontmatter, and BMAD's planning-only scope rules.
+
+## Repository Layout
+
+This repository is structured like a Codex marketplace repo:
+
+```text
+codex-bmad-skills/
+├── .github/workflows/ci.yml
+├── .agents/plugins/marketplace.json
+├── plugins/codex-bmad-planning-orchestrator/
+│   ├── .codex-plugin/plugin.json
+│   ├── skills/
+│   ├── scripts/
+│   └── references/
+├── examples/
+├── install.sh
+├── uninstall.sh
+└── scripts/
+```
 
 ## Roadmap
 
