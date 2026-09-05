@@ -1,6 +1,7 @@
 ---
 name: bmad-tech-spec
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Creates, updates, or validates bmad-output/tech-spec.md for Quick Flow work
   (roughly 1-15 stories) when a full PRD plus architecture is too heavy. Use for
   "$bmad-tech-spec", "bmad:tech-spec", or when the user says "write a tech spec",
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 This skill produces a focused `tech-spec.md` for **Quick Flow** work: small, well-scoped
 features or changes that sit in the 1-15 story range. It consolidates the product
@@ -112,7 +115,7 @@ When intent is **Validate**, report pass/fail for each item:
 - [ ] Dependencies table lists version or version constraint
 - [ ] Risks table lists at least one risk with a mitigation
 - [ ] Decision log entries have been written for any significant choices
-- [ ] No content instructs a dev agent to run tests, lint, build, or deploy
+- [ ] Verification instructions are assigned to the downstream development workflow; this planning skill does not execute them
 
 ---
 

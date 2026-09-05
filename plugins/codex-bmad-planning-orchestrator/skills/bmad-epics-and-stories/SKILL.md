@@ -1,6 +1,7 @@
 ---
 name: bmad-epics-and-stories
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Shards approved PRD/tech-spec and architecture inputs into bmad-output/epics.md
   plus ready-for-dev {epic}.{story}.{slug}.story.md context objects. Use for
   "$bmad-epics-and-stories", "bmad:stories", "bmad:story-draft", or when the user
@@ -17,9 +18,11 @@ description: |
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
 
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
+
 **Track-adaptive sharding.** Turn approved planning docs into the executable backlog: one
-`epics.md` map plus per-story context objects. This is the final planning step — the next
-thing that touches a story is an **external dev tool**, not this plugin.
+`epics.md` map plus per-story context objects. Then sequence stories with
+`bmad-sprint-planning` and optionally export with `bmad-handoff` before external development.
 
 **Persona flavor:** the Architect (Winston) shards; the PM (John) confirms scope. Lightweight
 flavor only — this is a workflow.
@@ -39,7 +42,7 @@ tests or writing implementation is out of scope — plan it and hand it off. If 
 | `bmad-output/project-context.md` | Project constitution — load every run |
 | `bmad-output/prd.md` | Functional requirements, epic intent |
 | `bmad-output/architecture.md` | Tech stack, components, module boundaries |
-| `bmad-output/ux-design.md` (if present) | UI acceptance details |
+| `bmad-output/DESIGN.md` and `EXPERIENCE.md` (if present) | Visual and journey acceptance details |
 | `bmad-output/decision-log.md` | Threaded decisions to honor |
 | existing `bmad-output/stories/*.story.md` | Learnings + ID continuity |
 
@@ -56,7 +59,7 @@ Ask which intent if ambiguous. Do not silently regenerate existing stories.
 
 ## Tracks (never numbered levels)
 
-Pick interactively; the heuristic suggests, the user confirms.
+Reuse project.track from config.yaml; suggest and confirm only when no track has been chosen.
 
 - **Quick Flow** (1-15 stories) — tech-spec only; shard straight to stories, thin `epics.md`.
 - **BMad Method** (10-50+) — PRD + Architecture (+ optional UX); full epic map then stories.
@@ -75,7 +78,7 @@ vs. completion rate. See [REFERENCE.md](REFERENCE.md) for the split heuristics.
 2. **Derive epics** — group PRD requirements into epics (each a shippable slice of value).
    Write `bmad-output/epics.md` from [templates/epic.template.md](templates/epic.template.md):
    epic goal, in-scope requirements (cited), ordered story list, cross-epic dependencies.
-3. **Confirm** the epic map with the user before compiling stories.
+3. **Review** the epic map against approved scope. Reuse authorization for story compilation; ask only about unresolved scope choices.
 4. **Generate IDs** — `bash ../bmad-epics-and-stories/scripts/generate-story-id.sh <epic-number>`
    gives the next `{epic}.{story}` and a slug stub. Filename: `{epic}.{story}.{slug}.story.md`.
 5. **Compile each story** as a CONTEXT OBJECT from
@@ -93,20 +96,20 @@ vs. completion rate. See [REFERENCE.md](REFERENCE.md) for the split heuristics.
    - **Learnings from Previous Stories** — carried forward from completed siblings.
    - **Dev Agent Record** — leave EMPTY for the external dev tool.
 6. **Scope-conflict check** — run the shared checker over the new/edited stories:
-   `bash ../../scripts/scope-conflict-check.sh bmad-output/stories/`
+   `bash ../../scripts/scope-conflict-check.sh --stories bmad-output/stories/`
    Resolve any overlapping Owned Scope before marking stories parallel-safe.
 7. **Set status** — `backlog` while drafting; flip to `ready-for-dev` only when every section
-   is complete, ACs are testable, scope is declared, and the conflict check is clean.
+   is complete, ACs are testable, scope is declared, and any valid scope overlaps have explicit sequencing constraints. Missing or invalid scope remains a blocker.
 8. **Log + hand off** — append decisions to `decision-log.md`; tell the user which stories are
-   `ready-for-dev` and hand off to the external dev tool. Do NOT implement.
+   `ready-for-dev` then route to bmad-sprint-planning and optional bmad-handoff. Do NOT implement within this skill.
 
 ## Workflow — Update / Validate
 
 - **Update:** locate the file by ID, edit non-locked sections freely. Changing a LOCKED
-  section (AC/Dev Notes/Testing) requires explicit user confirmation and a decision-log entry.
+  section (AC/Dev Notes/Testing) requires an explicit user request or prior authorization for that change and a decision-log entry.
   Re-run the scope-conflict check if Owned Scope changed.
 - **Validate:** for each story confirm all required sections exist, every Task cites an AC,
-  Dev Notes carry source citations, Owned Scope is non-empty and conflict-free, and status is
+  Dev Notes carry source citations, Owned Scope is non-empty and conflicts are assigned to separate waves, and status is
   legal. Report a checklist of pass/fail — do not edit unless asked.
 
 ## Status Lifecycle

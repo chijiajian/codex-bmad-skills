@@ -1,6 +1,7 @@
 ---
 name: bmad-investigate
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Produces a graded investigation case file for bugs, incidents, and issue triage:
   symptoms, evidence, hypotheses, suspected components, and planning response. Use
   for "$bmad-investigate", "bmad:investigate", or when the user says "investigate
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Forensic triage — plan the fix, don't apply it.**
 
@@ -68,7 +71,7 @@ Ask which intent applies if ambiguous.
 
 ## Workflow — Create
 
-Use TodoWrite to track progress through these steps.
+Use the available progress-tracking tool to track progress through these steps.
 
 ### Step 1 — Clarify the Symptom
 

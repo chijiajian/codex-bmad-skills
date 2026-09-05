@@ -100,7 +100,7 @@ A story with no declared scope is a **planning blocker**. The `bmad-parallel-pla
 Before any story is marked `ready-for-dev`, run the shared conflict checker:
 
 ```bash
-bash ../scripts/scope-conflict-check.sh bmad-output/stories/
+bash ../scripts/scope-conflict-check.sh --stories bmad-output/stories/
 ```
 
 The checker reads the Owned Scope block from each `*.story.md`, computes pairwise path intersections, and reports any pair that shares a path. For each conflict:
@@ -109,7 +109,7 @@ The checker reads the Owned Scope block from each `*.story.md`, computes pairwis
 - Re-slice the stories so their scopes are disjoint, OR
 - Extract the shared file into a small enabling story that both depend on.
 
-Re-run until clean. A story is only truly `ready-for-dev` when the checker reports no overlaps with any other `ready-for-dev` story in the same wave.
+Resolve invalid scope declarations and assign overlapping stories to separate waves. Complete documents remain `ready-for-dev` in later waves; execution eligibility also requires satisfied prerequisites.
 
 ### Prevention Step 3: Git Worktrees
 

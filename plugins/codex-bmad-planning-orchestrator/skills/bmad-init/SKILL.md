@@ -1,6 +1,7 @@
 ---
 name: bmad-init
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Initialize a BMAD planning workspace: pick a scale-adaptive TRACK (Quick Flow /
   BMad Method / Enterprise) interactively, then scaffold the output folder, a config
   file, an empty decision-log.md, and a project-context.md "constitution". Use for
@@ -17,6 +18,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 Set up the planning workspace and choose the TRACK that scales the rest of the BMAD
 planning workflows. This is a **planning** skill: it creates folders and seed
@@ -59,7 +62,7 @@ These files are optional compatibility state. They do not replace `bmad-output/`
 
 The track is a **planning-need** decision, not a points/velocity decision. Story
 count is a rough signal only; let scope, cross-team coordination, and risk drive the
-call. A heuristic may suggest a default — **the user always confirms**.
+call. A heuristic may suggest a default — reuse the user's existing choice; confirm only a missing or changed choice.
 
 ## Workflow
 
@@ -87,7 +90,7 @@ call. A heuristic may suggest a default — **the user always confirms**.
    - 10+ stories, or PRD/architecture clearly needed → **BMad Method**
    - otherwise → **Quick Flow**
 
-4. **Scaffold.** Once the user confirms name + track, run:
+4. **Scaffold.** Once name + track are provided or confirmed, run:
 
    ```bash
    bash "../bmad-init/scripts/init-project.sh" \
@@ -107,10 +110,10 @@ call. A heuristic may suggest a default — **the user always confirms**.
 5. **Open the constitution.** Walk the user through filling the first sections of
    `project-context.md` (project goal, primary users, constraints, non-goals). This
    is the document every downstream skill loads, so a few good sentences here pay off.
-   Record the track choice and rationale as the first entry in `decision-log.md`.
+   Record project.has_ui as true or false in config.yaml. Record the track choice and rationale as the first entry in `decision-log.md`.
 
 6. **Hand off.** Recommend the next planning step based on track:
-   - Quick Flow → tech-spec, then sprint-planning / story creation.
+   - Quick Flow → tech-spec, optional UI planning, readiness check, story creation, then sprint-planning.
    - BMad Method → product brief → PRD → architecture.
    - Enterprise → product brief → PRD → architecture (+ security & DevOps planning).
 

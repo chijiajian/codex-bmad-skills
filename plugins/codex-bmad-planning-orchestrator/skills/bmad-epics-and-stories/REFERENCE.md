@@ -40,7 +40,7 @@ dev agent can trust it without re-deriving:
 
 - `[Source: prd.md#FR-12]`
 - `[Source: architecture.md#payment-service]`
-- `[Source: ux-design.md#checkout-flow]`
+- `[Source: DESIGN.md#checkout-flow]`
 - `[Source: epics.md#epic-2]`
 
 If a Dev Note is your own inference (not in any doc), label it `[Inference]` so it is
@@ -100,7 +100,7 @@ Required sections, in order (see `templates/story.template.md`):
 
 **LOCKED** means the external dev tool must not edit AC, Dev Notes, or Testing. They are the
 compiled, cited contract. If planning genuinely needs to change one, that is an **Update**
-intent in this skill: confirm with the user and log it in `decision-log.md`.
+intent in this skill: reuse an explicit request or prior authorization, and log it in `decision-log.md`.
 
 **Testing is strategy, not execution.** Describe *what* to test (unit/integration/e2e targets,
 key scenarios, fixtures/mocks, the acceptance check per AC). Never run a suite, never quote
@@ -138,7 +138,7 @@ The overlap checker is authored once for the whole plugin and lives at
 `../../scripts/scope-conflict-check.sh`. **Do not copy or reimplement it.**
 
 ```bash
-bash ../../scripts/scope-conflict-check.sh bmad-output/stories/
+bash ../../scripts/scope-conflict-check.sh --stories bmad-output/stories/
 ```
 
 It reads the Owned Scope block from each `*.story.md`, computes pairwise path intersections,
@@ -150,7 +150,7 @@ and reports any pair that shares a path. Workflow:
   shared file into a small enabling story everything depends on. Re-run until clean (or until
   every remaining overlap is intentionally serialized).
 
-A story is only truly `ready-for-dev` once its scope is declared and the checker is satisfied.
+A complete story may be `ready-for-dev` once its scope is valid and overlaps have explicit sequencing constraints. Only same-wave stories must have disjoint scopes.
 
 ---
 

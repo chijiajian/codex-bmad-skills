@@ -1,8 +1,9 @@
 ---
 name: bmad-sprint-planning
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Creates or maintains bmad-output/sprint-status.yaml as the story sequencing and
-  status system of record. Use for "$bmad-sprint-planning", "bmad:sprint-plan", or
+  scheduling view, mirroring lifecycle from story headers. Use for "$bmad-sprint-planning", "bmad:sprint-plan", or
   when the user says "sequence the stories", "build the sprint status", "create
   sprint-status.yaml", "assign parallel sets", "order stories by dependency", "set
   up story sequencing", "initialize sprint tracking", "ready the backlog", or
@@ -16,8 +17,10 @@ description: |
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
 
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
+
 **Role:** Sequencing & Handoff Bridge — Phase 4 orchestration
-**System-of-record:** `bmad-output/sprint-status.yaml`
+**Scheduling view:** `bmad-output/sprint-status.yaml`
 
 ---
 
@@ -27,7 +30,7 @@ Resolve bundled resources relative to this skill directory. When running a bundl
 2. Derives a dependency graph across all stories.
 3. Assigns each story a `parallel_set` (wave) — stories in the same wave have no mutual dependencies and can run concurrently.
 4. Emits `bmad-output/sprint-status.yaml` using the canonical template.
-5. Marks the first wave of stories `ready-for-dev`; all others remain `backlog`.
+5. Mirrors lifecycle from story headers; complete documents remain `ready-for-dev` in every wave. Dependency satisfaction determines when execution may start.
 6. Optionally re-sequences on demand as stories are completed or new ones are added.
 
 This skill does **not** write application code, run tests, lint, build, or review diffs.
@@ -57,7 +60,7 @@ This skill does **not** write application code, run tests, lint, build, or revie
    - Derive epic ordering from the epic list in `epics.md` or `prd.md`
 
 3. **Build dependency graph**
-   - Read `dependencies[]` from each story's frontmatter or Dev Notes section
+   - Read `**Blocked by:**` from each story's Dependency Maps section; normalize legacy slug-bearing IDs
    - Topological sort: stories with no unmet dependencies → wave 1; stories unblocked after wave 1 → wave 2; etc.
 
 4. **Initialize sprint-status.yaml**
@@ -71,10 +74,11 @@ This skill does **not** write application code, run tests, lint, build, or revie
    bash ../bmad-sprint-planning/scripts/sequence-stories.sh
    ```
 
-6. **Set initial statuses**
-   - Wave 1 stories: `status: ready-for-dev`
-   - All other stories: `status: backlog`
-   - Epics: `status: in-progress` if any child story is ready-for-dev; else `backlog`
+6. **Mirror lifecycle without downgrading later waves**
+   - Read each story's explicit status header into the scheduling view.
+   - Keep complete documents `ready-for-dev` in every wave.
+   - Preserve `done` and `cancelled`; neither is wave-eligible.
+   - Mark actual execution state only from user/dev-tool signals.
 
 7. **Emit handoff summary** — list wave 1 stories by `owned_scope` for conflict-free parallel dispatch
 
@@ -83,9 +87,9 @@ This skill does **not** write application code, run tests, lint, build, or revie
 ## Workflow — Update
 
 When a story moves to `done`:
-1. Remove it from any `dependencies[]` lists where it appears
+1. Mirror its `done` status from the story header; retain all dependency declarations
 2. Identify newly unblocked stories (dependencies now fully satisfied)
-3. Promote them to `ready-for-dev`
+3. List the now-executable stories; document readiness and execution eligibility are separate
 4. Re-evaluate parent epic status
 5. Write updated `sprint-status.yaml`
 
@@ -125,7 +129,7 @@ backlog → ready-for-dev → in-progress → review → done
 | BMAD Method | 10–50+ | Full wave assignment; epic grouping |
 | Enterprise | 30+ | Multi-phase wave planning; dependency map documented in REFERENCE |
 
-Track is confirmed with the user before generating the status file.
+Reuse project.track from config.yaml. Ask only when it is missing or a requested scope change invalidates it.
 
 ---
 
@@ -178,8 +182,10 @@ bash ../bmad-sprint-planning/scripts/init-sprint-status.sh \
 ```
 
 ### `sequence-stories.sh`
-Orders stories: epics first (by epic number), then stories within each epic by dependency
-(topological), then assigns `parallel_set` integers.
+Requires Python 3.9+ and PyYAML (see repository requirements.txt); works with the default macOS shell. The helper validates the whole plan before replacing YAML. Comments in this generated scheduling view may be normalized, while unrelated data fields are retained.
+
+Orders stories across epics by dependency, separates scope conflicts, then assigns
+`parallel_set` integers. Story IDs break ties; they do not override explicit dependencies.
 
 ```bash
 bash ../bmad-sprint-planning/scripts/sequence-stories.sh \
@@ -200,7 +206,7 @@ Fields: `epics[]`, `stories[]` (with `id`, `title`, `status`, `dependencies`, `p
 ## Key Guidelines
 
 1. **Load context first** — always read existing `sprint-status.yaml` before writing
-2. **Use TodoWrite** to track multi-step sequencing workflows
+2. **Use the available progress-tracking tool** to track multi-step sequencing workflows
 3. **Respect owned_scope** — flag conflicts before assigning same-wave membership
 4. **No metrics** — if a field resembles velocity, points, or burndown, remove it
 5. **Handoff clearly** — conclude every Create/Update with the list of `ready-for-dev` stories and their `owned_scope`

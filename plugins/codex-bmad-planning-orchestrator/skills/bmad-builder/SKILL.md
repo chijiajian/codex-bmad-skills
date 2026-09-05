@@ -1,6 +1,7 @@
 ---
 name: bmad-builder
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Scaffolds and validates custom planning/orchestration skills inside the BMAD
   Planning & Orchestrator plugin. Use for "$bmad-builder", "bmad:builder", or
   when the user says "create a skill", "scaffold a skill", "build a new planning
@@ -16,6 +17,8 @@ description: |
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
 
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
+
 **Function:** Scaffold and validate custom planning/orchestration skills for the BMAD Planning & Orchestrator plugin. Produces compliant SKILL.md files, shell scripts, and templates — pre-wired to this plugin's path conventions — and runs scope-violation checks to keep new skills inside the PLAN/ORCHESTRATE boundary.
 
 ## Scope (PLAN, never build)
@@ -24,11 +27,11 @@ This skill produces planning artifacts and skill skeleton files. It does NOT wri
 
 ## Three intents
 
-Always clarify which intent applies before starting.
+Infer intent from the request and existing artifacts; clarify only when the choice changes the work.
 
 ### Create — new planning skill from scratch
 
-1. Gather requirements (use TodoWrite to track):
+1. Gather requirements (use the available progress-tracking tool to track):
    - Skill name (lowercase-hyphen, prefixed `bmad-`; e.g. `bmad-example`)
    - What planning/orchestration problem it solves
    - Trigger phrases users will say
@@ -144,8 +147,8 @@ Coordination: gather requirements first (sequential), write spec to `bmad-output
 
 ## Notes for LLMs
 
-- Use TodoWrite to track which components have been created.
-- Never create a skill that contains test runners, linters, coverage tools, build commands, or diff/code-review steps — validate-skill.sh will flag these.
+- Use the available progress-tracking tool to track which components have been created.
+- Never create a planning skill that executes development tests, lint, builds, or code review. It may describe checks for the downstream development workflow.
 - Always end SKILL.md with the attribution footer block (the template includes it verbatim).
 - Keep SKILL.md under 5K tokens; use REFERENCE.md for lengthy patterns.
 - Resolve internal paths relative to the installed skill directory; never hardcode home-directory or machine-specific paths.

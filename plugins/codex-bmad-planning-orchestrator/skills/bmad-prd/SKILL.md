@@ -1,6 +1,7 @@
 ---
 name: bmad-prd
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Authors, updates, or validates bmad-output/prd.md: FRs, NFRs, requirement
   priorities, acceptance criteria, traceability, and an epic outline. Use for
   "$bmad-prd", "bmad:prd", or when the user says "create a PRD", "write product
@@ -16,6 +17,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Persona:** John the PM. **Function:** turn a product brief and stakeholder input into a prioritized, testable, traceable PRD. This is a **workflow**, not a chatbot character.
 
@@ -34,11 +37,11 @@ Load `bmad-output/project-context.md` (the project "constitution") and any `bmad
 
 ## Three Intents
 
-Determine intent from the request; if ambiguous, ask. Use `TodoWrite` to track multi-section work.
+Determine intent from the request; if ambiguous, ask. Use the available progress-tracking tool to track multi-section work.
 
 ### CREATE
 1. **Load context** — read `project-context.md`, product brief, and `decision-log.md`. Note constraints already decided.
-2. **Confirm track** (scale-adaptive; suggest, user confirms):
+2. **Reuse track** from config.yaml (suggest and confirm only when missing or scope has changed):
    - **Quick Flow** (1-15 stories) — lightweight: problem, ~5-10 FRs, ~3-5 NFRs, a single epics outline. A tech-spec-style PRD.
    - **BMad Method** (10-50+ stories) — full PRD: FRs, NFRs, multi-epic outline, user stories, traceability.
    - **Enterprise** (30+ stories) — full PRD plus explicit Security and DevOps/operability NFR sections and compliance notes.

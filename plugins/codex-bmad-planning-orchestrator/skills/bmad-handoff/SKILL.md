@@ -1,6 +1,7 @@
 ---
 name: bmad-handoff
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Emits bmad-output/handoff-manifest.json from ready-for-dev stories for external
   dev tools or orchestrators. Use when the user says "$bmad-handoff",
   "bmad:handoff", "generate a handoff", "create handoff manifest", "export stories for
@@ -14,6 +15,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Purpose:** Scan the planning output folder for all stories at status `ready-for-dev`,
 compile them into a single `handoff-manifest.json`, and leave it where any downstream
@@ -30,7 +33,7 @@ point-in-time snapshot; re-run the skill to refresh it.
 
 ## Workflow
 
-Use TodoWrite to track progress through these steps.
+Use the available progress-tracking tool to track progress through these steps.
 
 ### 1. Locate the output folder
 
@@ -56,14 +59,14 @@ For each qualifying story file, extract:
 
 | Field | Source in story file |
 |---|---|
-| `id` | Filename stem or `## Story` heading ID |
+| `id` | `**Story ID:**` (epic.story); normalize legacy filename/slug IDs |
 | `storyFilePath` | Relative path from project root |
 | `status` | `**Status:**` header field value |
 | `epic` | First segment of filename, e.g. `"2"` in `2.1.stripe.story.md` |
 | `storyNumber` | Second segment, e.g. `"1"` |
 | `title` | First H1 or `## Story` heading text |
 | `ownedScope` | `## Owned File/Module Scope` — list every path verbatim |
-| `wave` | `## Dependency Maps` → wave/parallel_set annotation (integer or null) |
+| `wave` | Matching sprint-status.yaml row → parallel_set; story annotation only as a fallback |
 | `parallelSet` | Same section — parallel set label if present (string or null) |
 | `dependencies` | `## Dependency Maps` → blocked-by story IDs (array, may be empty) |
 | `acceptanceCriteriaSummary` | First 3 AC items from `## Acceptance Criteria`, each ≤120 chars |
@@ -72,10 +75,10 @@ For each qualifying story file, extract:
 
 ### 5. Compute wave order
 
-If stories do not already carry explicit wave annotations:
+Reuse current sprint-status.yaml wave annotations first. Validate dependencies and Owned Scope before export. If no scheduling view exists, route to bmad-sprint-planning. For a direct manual export with known dependencies:
 - Stories with empty `dependencies` arrays are wave 1.
 - A story whose every dependency is in wave N or lower is wave N+1.
-- Add the computed `wave` value; leave `parallelSet` null when not annotated.
+- Serialize intersecting scopes, even without an explicit dependency. Reject cycles and unresolved ordering instead of inventing a wave; only `parallelSet` may be null when not annotated.
 
 ### 6. Write the manifest
 
@@ -86,6 +89,14 @@ Use the schema from
 as the structural contract. Populate `schemaVersion: "1.0"`.
 
 Sort stories by `wave` ascending, then by `id` ascending within each wave.
+Prepare the candidate in a temporary file and validate it before replacing the manifest:
+
+```sh
+python3 ../../scripts/validate_handoff.py <candidate-manifest.json>
+```
+
+This needs jsonschema from the repository requirements.txt. Keep the previous manifest
+if schema, dependency or same-wave scope checks fail.
 
 ### 7. Report to the user
 
@@ -95,12 +106,12 @@ Print a compact summary:
 Handoff manifest written → bmad-output/handoff-manifest.json
   schemaVersion : 1.0
   stories       : <N> ready-for-dev
-  waves         : <W>  (wave 1 has <X> stories, can start immediately)
+  waves         : <W>  (wave 1 has <X> stories; verify external prerequisites before execution)
   output path   : bmad-output/handoff-manifest.json
 ```
 
 If any story was missing required sections (e.g. no `## Owned File/Module Scope`),
-list those as warnings — do not silently omit or fabricate data.
+report them as export blockers and preserve the prior manifest. Do not omit or fabricate required data.
 
 ## Manifest Field Definitions (Quick Reference)
 
@@ -158,14 +169,15 @@ The coordinator merges, computes waves, sorts, and writes the manifest.
 
 ## Key Guidelines
 
-1. Never fabricate field values — if a field is missing from a story file, emit `null`
-   and add a warning to the summary.
+1. Never fabricate field values. Emit null only for schema-nullable fields.
+   If required metadata is missing, report the gap and leave the previous manifest intact.
 2. Do not modify story files — this skill is read-only with respect to story content.
 3. `ownedScope` is critical for parallel-conflict safety; never collapse or summarize it.
 4. This manifest is a STABLE versioned interface. Increment `schemaVersion` (as a
    separate schema revision, not within this run) before adding or removing fields.
-5. Do not filter out stories based on anything other than `ready-for-dev` status —
-   dependency resolution is the dev tool's job.
+5. Include all ready-for-dev documents, including later waves. Preserve dependencies
+   on completed/external stories; verify their completion from source artifacts before
+   claiming any story can start. Validate internal ordering and same-wave scope safety.
 6. If the user asks to "re-run" or "refresh" the manifest, overwrite the existing file.
 
 ---

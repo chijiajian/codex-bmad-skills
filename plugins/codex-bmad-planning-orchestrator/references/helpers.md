@@ -78,7 +78,7 @@ sh "../scripts/check-phase.sh" [--output <folder>]
 ```
 PHASE=<phase>
 TRACK=<track>
-NEXT_SKILL=<bmad-planning-orchestrator:skill-name | none>
+NEXT_SKILL=<bmad-skill-name | none>
 REASON=<human-readable rationale>
 ```
 
@@ -91,14 +91,15 @@ REASON=<human-readable rationale>
 | `planning` | Product brief done; PRD / tech-spec in progress |
 | `solutioning` | PRD done; architecture in progress |
 | `implementation-handoff` | Architecture done; stories being created |
-| `handoff-complete` | All stories `ready-for-dev`; external dev tool takes over |
+| `handoff-complete` | Current readiness verdict, scheduling view and validated manifest match the stories |
+| `implementation-external` | Story headers show execution has started externally |
 
 **Skill usage pattern (routing):**
 ```
 1. Run check-phase.sh to get PHASE and NEXT_SKILL.
 2. If PHASE=uninitialized → invoke bmad-init first.
 3. If PHASE=handoff-complete → inform user; do not plan further.
-4. Otherwise → suggest NEXT_SKILL to the user and let them confirm.
+4. Otherwise → continue within existing authorization, or present the next skill if the user only asked for status.
 ```
 
 ---
@@ -111,7 +112,7 @@ Two sub-commands:
 
 #### Sub-command: story
 
-Updates the `status:` field for a story in `sprint-status.yaml`.
+Updates the lifecycle mirror in `sprint-status.yaml`. Set the canonical story header first; this helper alone does not make a story ready.
 
 ```sh
 sh "../scripts/update-status.sh" story \
@@ -154,8 +155,8 @@ Entry format (always newest-first):
 **Skill usage pattern:**
 ```
 After producing a planning artifact:
-  1. Call update-status.sh story --id <id> --status ready-for-dev
-     for each story that is now complete and ready.
+  1. Set **Status:** ready-for-dev in each complete story, then refresh an
+     existing sprint-status.yaml mirror. Create scheduling after story compilation.
   2. For architecture / track / major scope decisions, call
      update-status.sh decision to keep the decision-log threaded.
 ```
@@ -232,19 +233,17 @@ sh "../scripts/scope-conflict-check.sh" \
 
 **Text output:**
 ```
-CONFLICT: 1.1 vs 2.3  path=src/auth/ overlaps src/auth/login.ts  reason=file-scope-overlap
-OK: 1.1 vs 1.2
-BLOCKED: 3.2  reason=no Owned File/Module Scope declared
-
-[scope-conflict-check] 1 conflict(s), 1 blocked (no scope)
-Stories with conflicts or missing scope MUST NOT share a parallel wave.
+CONFLICT: 1.1 2.3 src/auth/ overlaps src/auth/login.ts reserved-scope-overlap
+OK: 1.1 1.2
+BLOCKED: 3.2   no Owned File/Module Scope declared
+Overlapping or unresolved scopes must be serialized or clarified.
 ```
 
 **JSON output (`--format json`):**
 ```json
 [
   {"type": "conflict", "a": "1.1", "b": "2.3",
-   "path": "src/auth/ overlaps src/auth/login.ts", "reason": "file-scope-overlap"},
+   "path": "src/auth/ overlaps src/auth/login.ts", "reason": "reserved-scope-overlap"},
   {"type": "ok", "a": "1.1", "b": "1.2", "path": "", "reason": ""},
   {"type": "blocked", "a": "3.2", "b": "", "path": "", "reason": "no Owned File/Module Scope declared"}
 ]
@@ -256,6 +255,8 @@ Stories with conflicts or missing scope MUST NOT share a parallel wave.
 - Exact match: `src/payments/stripe.ts` == `src/payments/stripe.ts`
 - Directory prefix: `src/auth/` matches any descendant `src/auth/login.ts`
 - Normalization: leading `./` and trailing `/` are stripped before comparison
+- Globs reserve the fixed directory prefix; `src/auth/**` conflicts with `src/auth/login.ts`
+- Missing scopes, parent traversal, absolute paths and placeholders are blocked
 
 **Skill usage pattern (bmad-parallel-plan and bmad-sprint-planning):**
 ```
@@ -292,9 +293,8 @@ Referenced by every artifact-producing skill.
 
 ```
 After writing a planning artifact to disk:
-  1. If the artifact is a story:
-       sh "../scripts/update-status.sh" story \
-           --id <id> --status ready-for-dev
+  1. If the artifact is a complete story, update its **Status:** header first.
+     Refresh the scheduling mirror when it exists; otherwise route to sprint planning.
   2. If a major architectural/scope decision was made:
        sh "../scripts/update-status.sh" decision \
            --title "<short title>" --body "<decision>" --skill "<skill-name>"
@@ -310,9 +310,9 @@ Referenced by the bmad-help routing skill.
 1. sh "../scripts/check-phase.sh" --output bmad-output
 2. Parse PHASE and NEXT_SKILL from stdout.
 3. If PHASE=uninitialized  → tell user to run bmad-init; stop.
-4. If PHASE=handoff-complete → tell user all stories are ready-for-dev;
-     the external dev tool should take over; stop planning.
-5. Otherwise → present NEXT_SKILL suggestion; let user confirm or redirect.
+4. If PHASE=handoff-complete → report that readiness, scheduling and manifest
+     checks match current stories.
+5. Otherwise → continue within authorization, or report NEXT_SKILL for a status-only request.
 ```
 
 ### Pattern: Scope Conflict Gate (Parallel Planning)
@@ -329,14 +329,15 @@ Before producing a parallelization plan:
            do not assign to any wave until fixed
        - "ok" pairs → eligible to share a wave
   3. Feed conflict pairs as undirected conflict edges into the wave algorithm.
-  4. Document deferred (blocked) stories in the handoff manifest and decision-log.
+  4. Document blockers in the parallelization plan and decision-log. Do not add
+     unsupported fields to the handoff schema or export invalid stories.
 ```
 
 ### Pattern: Story Status Lifecycle
 
 The external dev tool owns transitions after `ready-for-dev`. The planning plugin
-only sets `backlog` → `ready-for-dev`. Never write `in-progress`, `review`, or
-`done` in planning scripts.
+only initiates `backlog` → `ready-for-dev`. Scheduling scripts may mirror later
+statuses from source story headers; never invent execution progress.
 
 ```
 planning plugin writes:    backlog  →  ready-for-dev

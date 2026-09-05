@@ -98,4 +98,5 @@ for f in "$PLUGIN_ROOT"/skills/*/SKILL.md; do
 done
 
 echo "All BMAD skill scope validations passed"
+python3 -m unittest discover -s "$REPO_ROOT/tests" -v
 echo "Validation complete."

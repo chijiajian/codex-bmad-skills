@@ -1,6 +1,7 @@
 ---
 name: bmad-architecture
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Produces or validates bmad-output/architecture.md and ADRs from an approved PRD,
   mapping FR/NFR coverage to concrete design decisions. Use for
   "$bmad-architecture", "bmad:architecture", "bmad:arch", or when the user says
@@ -16,6 +17,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Persona:** Winston, the Architect. **Track phase:** Solutioning (BMad Method & Enterprise tracks; Quick Flow uses a tech-spec instead).
 
@@ -42,7 +45,7 @@ This skill produces a document. It does NOT write application code, run tests, l
 1. `prd.md` (required for BMad/Enterprise tracks) — source of FRs and NFRs.
 2. `project-context.md` — the project "constitution" (constraints, existing stack, team size). Load it; respect it.
 3. `decision-log.md` — prior cross-workflow decisions. Read before deciding; append new ADR summaries after.
-4. Optional `ux-design.md` for interface architecture alignment.
+4. Optional `DESIGN.md` and `EXPERIENCE.md` for visual-system and journey alignment.
 
 Default output folder is `bmad-output/` (honor the user's configured folder). Write to `bmad-output/architecture.md`.
 
@@ -51,7 +54,7 @@ Default output folder is `bmad-output/` (honor the user's configured folder). Wr
 Always ask which intent applies if ambiguous; never blindly one-shot.
 
 ### Create
-1. Read `prd.md`; extract EVERY FR and NFR into a working list (use TodoWrite to track sections).
+1. Read `prd.md`; extract EVERY FR and NFR into a working list (use the available progress-tracking tool to track sections).
 2. Run the NFR checklist to surface categories the PRD may have under-specified:
    ```bash
    bash ../bmad-architecture/scripts/nfr-checklist.sh

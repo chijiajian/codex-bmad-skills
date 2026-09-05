@@ -19,6 +19,7 @@ Out of scope:
 Before submitting changes, run:
 
 ```sh
+python3 -m pip install -r requirements.txt
 ./scripts/validate.sh
 ```
 

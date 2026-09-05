@@ -31,6 +31,9 @@ jobs:
         with:
           ruby-version: "3.3"
 
+      - name: Install helper dependencies
+        run: python3 -m pip install -r requirements.txt
+
       - name: Validate plugin and skills
         run: ./scripts/validate.sh
 
@@ -52,12 +55,12 @@ jobs:
 
       - name: Smoke test skills-only install
         run: |
-          export CODEX_HOME="${RUNNER_TEMP}/codex-home"
-          ./scripts/install-skills.sh
-          test -f "${CODEX_HOME}/skills/bmad-help/SKILL.md"
-          test -d "${CODEX_HOME}/skills/_bmad-shared/scripts"
-          test -d "${CODEX_HOME}/skills/_bmad-shared/references"
-          if grep -R -E '\.\./\.\./(scripts|references)/' "${CODEX_HOME}/skills"/bmad-*; then
+          skills_dest="${RUNNER_TEMP}/codex-skills"
+          ./scripts/install-skills.sh --destination "$skills_dest"
+          test -f "$skills_dest/bmad-help/SKILL.md"
+          test -d "$skills_dest/_bmad-shared/scripts"
+          test -d "$skills_dest/_bmad-shared/references"
+          if grep -R -E '\.\./\.\./(scripts|references)/' "$skills_dest"/bmad-*; then
             echo "Found stale relative shared-resource references after install." >&2
             exit 1
           fi

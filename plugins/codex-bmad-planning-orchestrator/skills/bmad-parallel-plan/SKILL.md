@@ -1,6 +1,7 @@
 ---
 name: bmad-parallel-plan
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Turns ready-for-dev stories into a conflict-free parallelization-plan.md using
   dependencies and Owned File/Module Scope. Use for "$bmad-parallel-plan",
   "bmad:parallel-plan", or when the user says "plan parallel work", "which stories
@@ -16,6 +17,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 Convert a linear backlog into **waves** of stories that can be developed at the same
 time without colliding — then describe exactly how to merge them back together. This
@@ -100,7 +103,7 @@ python3 "../bmad-parallel-plan/scripts/plan-parallel-waves.py" \
   --out          "<output>/waves.json"
 
 # 3) (Optional) cross-check two scope lists for overlap — shared orchestrator helper
-bash "../../scripts/scope-conflict-check.sh" \
+bash "../../scripts/scope-conflict-check.sh" --story-files \
   "<output>/stories/2.1.foo.story.md" "<output>/stories/2.2.bar.story.md"
 ```
 

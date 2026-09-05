@@ -1,5 +1,29 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Unified both planning routers around current config, canonical story status,
+  DESIGN.md/EXPERIENCE.md, readiness verdicts, scheduling and validated handoff state.
+- Conservatively detect directory/glob scope conflicts across the scope checker,
+  dependency graph, sprint sequencing and handoff validation.
+- Preserve document readiness across later waves and retain completed dependencies.
+  Reject stale scheduling mirrors, unresolved prerequisites and conflicting waves.
+- Make Quick Flow readiness work without a standalone architecture and compare
+  actual FR/NFR identifiers for full-track pre-flight checks.
+- Validate handoff candidates against the existing schema and planning constraints;
+  preserve the prior manifest when required data is missing or invalid.
+- Reuse existing user decisions and authorization, scope generic triggers to BMAD
+  work, and adapt historical tool names to the current runtime.
+
+### Changed
+
+- Replaced affected shell parsers with shared Python 3.9+ helpers. Sequencing and
+  schema validation require PyYAML and jsonschema; see requirements.txt.
+- Added offline behavioral regression coverage to repository validation and CI,
+  including an isolated skills-only installation check.
+
 ## [1.0.1] - 2026-06-25
 
 Codex subagent authorization guardrail release.

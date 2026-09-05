@@ -1,0 +1,3 @@
+# Runtime dependencies for YAML sequencing and JSON Schema handoff validation.
+PyYAML>=6.0,<7
+jsonschema>=4.18,<5

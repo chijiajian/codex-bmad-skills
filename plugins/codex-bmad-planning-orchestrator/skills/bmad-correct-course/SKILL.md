@@ -1,6 +1,7 @@
 ---
 name: bmad-correct-course
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Re-enters BMAD planning after requirements, features, architecture, or constraints
   change mid-stream. Use for "$bmad-correct-course", "bmad:correct-course", or
   when the user says "we need to change course", "scope has changed", "new
@@ -16,6 +17,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Role:** Cross-phase re-entry point for mid-stream planning changes.
 
@@ -89,7 +92,7 @@ which scenario applies rather than assuming.
 
 ## Workflow
 
-Use `TodoWrite` to track progress through these steps.
+Use the available progress-tracking tool to track progress through these steps.
 
 ### Step 1 — Load and orient
 
@@ -109,7 +112,7 @@ Identify the minimum blast radius:
   the change need special care — flag them; do not silently move them.)
 - Does `sprint-status.yaml` need re-sequencing?
 
-Present the triage to the user and confirm before editing.
+Present the triage. Apply already authorized changes; ask before a material expansion or an unresolved change to live work.
 
 ### Step 3 — Update planning artifacts
 
@@ -153,7 +156,7 @@ pure add-one / drop-one with no dependency ripple), you may edit
 
 ```bash
 # Validate current sprint-status.yaml before editing
-bash "../../scripts/scope-conflict-check.sh" bmad-output/stories/
+bash "../../scripts/scope-conflict-check.sh" --stories bmad-output/stories/
 ```
 
 #### 3d. Re-plan parallelism (route to bmad-parallel-plan, if needed)

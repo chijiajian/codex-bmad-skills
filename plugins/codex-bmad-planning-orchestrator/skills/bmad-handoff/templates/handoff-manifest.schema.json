@@ -67,7 +67,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique story identifier derived from the story filename stem (e.g. '2.1.stripe-integration'). Stable across manifest regenerations.",
+          "description": "Unique epic.story identifier (e.g. '2.1'). Legacy epic.story.slug values remain accepted; normalize them for dependency matching.",
           "minLength": 1,
           "examples": ["2.1.stripe-integration", "1.3.user-auth"]
         },
@@ -101,7 +101,7 @@
         },
         "ownedScope": {
           "type": "array",
-          "description": "Verbatim list of file and directory paths this story is permitted to modify. Primary mechanism for parallel-conflict safety: two stories sharing any path in ownedScope must not run concurrently. Empty array means new-files-only (lower conflict risk, but runner should still validate).",
+          "description": "Verbatim list of file and directory paths this story is permitted to modify. Primary mechanism for parallel-conflict safety: two stories sharing any path in ownedScope must not run concurrently. The schema permits an empty array for compatibility; planning validation requires declared paths, including new files.",
           "items": {
             "type": "string",
             "minLength": 1
@@ -116,7 +116,7 @@
         },
         "wave": {
           "type": "integer",
-          "description": "Execution wave number (minimum 1). Wave 1 = no dependencies, may start immediately. Wave N may start only after all stories in lower waves that this story depends on are complete.",
+          "description": "Execution wave number (minimum 1). Internal dependencies must occupy earlier waves. Verify every prerequisite, including dependencies outside this manifest, before execution.",
           "minimum": 1,
           "examples": [1, 2, 3]
         },

@@ -1,6 +1,7 @@
 ---
 name: bmad-ux
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Creates, updates, or validates UX planning docs for UI work: DESIGN.md for the
   visual system and EXPERIENCE.md for journeys, states, and flows. Use for
   "$bmad-ux", "bmad:ux", or when the user says "design the UX", "create UX
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 Produces the two-document UX contract that downstream story authors and the external
 dev tool rely on. This is a **planning** skill. It produces specifications, not code.
@@ -49,7 +52,7 @@ Before drafting, read (in order):
 3. `bmad-output/prd.md` (if present) — feature list, user stories, acceptance criteria.
 4. `bmad-output/architecture.md` (if present) — component boundaries, API contracts.
 
-If any of these are missing, ask the user for the key inputs before proceeding.
+Use the existing tech-spec for Quick Flow. PRD and architecture are optional inputs here; ask only for information needed to resolve a design decision.
 
 ## DESIGN.md — Visual System
 

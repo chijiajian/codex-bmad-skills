@@ -1,6 +1,7 @@
 ---
 name: bmad-research
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Conducts market, competitive, domain, or technical research with citations and
   writes research-report.md for BMAD planning. Use for "$bmad-research",
   "bmad:research", or when the user says "research this topic", "competitive
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 Conducts structured, cited research across three modes to feed BMAD planning workflows.
 Output is a research-report.md in bmad-output/, ready for handoff to planning skills.
@@ -48,7 +51,7 @@ Run it (Bash) to print the guide, then sketch a query plan:
 - Specific URLs to WebFetch (industry reports, competitor sites, docs)
 - Triangulation goal: each key claim backed by 2+ independent sources
 
-Track progress with TodoWrite.
+Track progress with the available progress-tracking tool.
 
 ---
 
