@@ -1,6 +1,7 @@
 ---
 name: bmad-prfaq
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Creates, updates, or validates an Amazon-style Working-Backwards PRFAQ: a future
   press release plus internal and external FAQs. Use for "$bmad-prfaq",
   "bmad:prfaq", or when the user says "write a PRFAQ", "working backwards",
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Role:** Pre-Phase Analysis — Working-Backwards stress-test
 
@@ -63,7 +66,7 @@ This skill supports three modes. Identify intent from context:
 
 - Check output folder for existing `prfaq.md`, `project-context.md`, and
   `decision-log.md`.
-- Confirm intent with the user (Create / Update / Validate).
+- Infer Create / Update / Validate from the request; ask only if ambiguous.
 - For **Create**: proceed to Step 2.
 - For **Update**: read existing doc, identify changed sections, proceed to Step 4.
 - For **Validate**: read existing doc, run the Validation Checklist (see below),
@@ -71,8 +74,7 @@ This skill supports three modes. Identify intent from context:
 
 ### 2. Gather (Create / Update)
 
-Ask the minimum questions needed to fill the template. Stop after each cluster
-and confirm before moving on. Suggested clusters:
+Ask the minimum questions needed to fill the template. Reuse supplied answers; ask about missing decisions before moving on. Suggested clusters:
 
 **Cluster A — Customer & Problem**
 - Who is the target customer (role, segment, context)?
@@ -245,7 +247,7 @@ Constraints:
 
 ## Tips for LLMs
 
-- Use TodoWrite to track the cluster-by-cluster gather process.
+- Use the available progress-tracking tool to track the cluster-by-cluster gather process.
 - Ask one cluster of questions at a time; do not dump all questions at once.
 - If the user is vague, use WebSearch to ground the problem in real market data
   before drafting (cite sources in the internal FAQ).

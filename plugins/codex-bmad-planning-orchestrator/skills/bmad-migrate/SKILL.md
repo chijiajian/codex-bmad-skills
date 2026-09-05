@@ -1,6 +1,7 @@
 ---
 name: bmad-migrate
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Discovers and migrates existing BMAD planning artifacts from Claude Code BMAD
   plugin or older Claude BMAD skills into this Codex BMAD workspace. Use when the
   user says "$bmad-migrate", "bmad:migrate", "migrate from Claude BMAD",

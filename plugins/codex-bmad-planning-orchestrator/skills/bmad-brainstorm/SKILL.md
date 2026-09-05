@@ -1,6 +1,7 @@
 ---
 name: bmad-brainstorm
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Runs structured ideation using SCAMPER, SWOT, 5 Whys, Mind Mapping, Six Thinking
   Hats, Reverse Brainstorming, Starbursting, or Brainwriting, then writes a
   brainstorming-report.md. Use when the user says "$bmad-brainstorm",
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 Structured ideation harness for the BMAD planning lifecycle. Produces a
 `brainstorming-report.md` of organized ideas and insights ready to feed downstream
@@ -53,7 +56,7 @@ Ask the user which intent applies — or infer from context:
 
 ## Session Workflow
 
-Use TodoWrite to track each step.
+Use the available progress-tracking tool to track each step.
 
 1. **Gather context** — Ask: topic/problem, relevant constraints, which BMAD track is active
 2. **Read project context** — Load `bmad-output/project-context.md` and `bmad-output/decision-log.md` if present

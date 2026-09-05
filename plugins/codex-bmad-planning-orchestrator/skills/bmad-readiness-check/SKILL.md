@@ -1,6 +1,7 @@
 ---
 name: bmad-readiness-check
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Validates cohesion across BMAD planning artifacts before implementation handoff,
   returning PASS, CONCERNS, or FAIL. Use for "$bmad-readiness-check",
   "bmad:readiness-check", or when the user says "check if we're ready to build",
@@ -17,6 +18,8 @@ description: |
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
 
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
+
 **"Planning ends here."** This skill is the gate between Solutioning and
 Implementation. It validates that the planning corpus is internally consistent
 — requirements are covered by architecture, epics trace back to requirements,
@@ -29,7 +32,7 @@ verdict and actionable specifics.
 
 ## Workflow
 
-Use TodoWrite to track: Load Artifacts → Cross-Reference → Quality Checks →
+Use the available progress-tracking tool to track: Load Artifacts → Cross-Reference → Quality Checks →
 Generate Report → Display Verdict.
 
 ---
@@ -62,7 +65,7 @@ Read each artifact the script located:
   Performance, Security, Scalability, Reliability, Maintainability).
 - Note epic count and high-level scope statements.
 
-**Architecture document**:
+**Technical design** (architecture.md for BMad Method/Enterprise; the technical approach section of tech-spec.md for Quick Flow):
 - Extract system components and their responsibilities.
 - Locate FR traceability matrix or explicit FR-to-component mappings.
 - Locate NFR coverage sections.
@@ -85,6 +88,8 @@ Baseline
 ---
 
 ### Step 3 — Cross-Reference Checks
+
+For Quick Flow, evaluate requirements against the technical approach inside the tech-spec. Do not require a separate architecture.md or count a requirement as covered merely because its ID exists in that same file. Pre-flight CONCERNS requests semantic review, not extra architecture boilerplate.
 
 #### 3a. FR → Architecture Coverage
 For each FR, search the architecture document for the FR identifier AND for

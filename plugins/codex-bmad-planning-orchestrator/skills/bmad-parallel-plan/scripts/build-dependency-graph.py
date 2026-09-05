@@ -2,8 +2,8 @@
 """
 build-dependency-graph.py  -  BMAD Parallel Plan
 
-Read sprint-status.yaml (for story status) and a directory of ready-for-dev story
-files ({epic}.{story}.{slug}.story.md), then emit a dependency DAG as JSON:
+Read a directory of story files, taking lifecycle, scope and dependencies from the
+canonical Markdown headers and sections ({epic}.{story}.{slug}.story.md), then emit a dependency DAG as JSON:
 
   - nodes          : one per wave-eligible story  {id, slug, epic, status, scope}
   - ordering_edges : directed constraints  {from, to, reason}
@@ -20,9 +20,8 @@ Usage:
   build-dependency-graph.py --status sprint-status.yaml --stories ./stories \
       --out dependency-graph.json [--max-parallel 3] [--shared src/auth src/db]
 
-YAML is parsed with PyYAML when present; otherwise a tolerant line scanner pulls
-just the fields we need (id/status). The story markdown is the source of truth for
-scope and dependencies, so the planner never depends on rich YAML.
+The --status argument is retained for CLI compatibility. Its YAML values cannot
+override story headers or establish completion of a missing prerequisite.
 """
 
 import argparse
@@ -30,6 +29,14 @@ import json
 import re
 import sys
 from pathlib import Path
+
+# Locate shared helpers in plugin and skills-only installations.
+_here = Path(__file__).resolve()
+_shared = _here.parents[3] / "scripts"
+if not (_shared / "planning_contract.py").is_file():
+    _shared = _here.parents[2] / "_bmad-shared" / "scripts"
+sys.path.insert(0, str(_shared))
+from planning_contract import scope_prefix, scopes_intersect, story_id, story_parts, story_status
 
 STORY_RE = re.compile(r"^(\d+)\.(\d+)\.(.+)\.story\.md$")
 
@@ -88,49 +95,9 @@ def _status_from_lines(text):
 # --------------------------------------------------------------------------- #
 # story markdown -> scope[] and depends_on[]
 # --------------------------------------------------------------------------- #
-SECTION_RE = re.compile(r"^#{1,6}\s+(.*\S)\s*$")
-BULLET_RE = re.compile(r"^\s*[-*]\s+(.*\S)\s*$")
-DEP_ID_RE = re.compile(r"(\d+\.\d+)")
-
-
-def _section_body(lines, start_idx):
-    """Yield bullet contents under the heading at start_idx until the next heading."""
-    for line in lines[start_idx + 1:]:
-        if SECTION_RE.match(line):
-            break
-        m = BULLET_RE.match(line)
-        if m:
-            yield m.group(1).strip()
-
-
 def parse_story(path):
     """Return (scope_paths, depends_on_ids) for one story file."""
-    lines = path.read_text(encoding="utf-8").splitlines()
-    scope, deps = [], []
-
-    for i, line in enumerate(lines):
-        h = SECTION_RE.match(line)
-        if not h:
-            continue
-        title = h.group(1).lower()
-
-        if "owned file" in title or "module scope" in title:
-            for item in _section_body(lines, i):
-                token = item.strip().strip("`").split("#", 1)[0].strip()
-                parts = token.split()
-                token = parts[0].strip("`") if parts else ""
-                if token and not token.lower().startswith("none"):
-                    scope.append(token)
-
-        elif "dependency map" in title or title == "dependencies":
-            for item in _section_body(lines, i):
-                low = item.lower()
-                if "depends_on" in low or "depends on" in low or low.startswith("blocked by"):
-                    deps += DEP_ID_RE.findall(item)
-
-    scope = list(dict.fromkeys(scope))
-    deps = list(dict.fromkeys(deps))
-    return scope, deps
+    return story_parts(path)
 
 
 # --------------------------------------------------------------------------- #
@@ -139,33 +106,18 @@ def parse_story(path):
 ELIGIBLE = {"ready-for-dev", "in-progress", "review"}
 
 
-def normalize(p):
-    return p.rstrip("/").lstrip("./")
-
-
-def scopes_intersect(a, b):
-    """Return (x, y) of the first overlapping pair, else None (prefix-aware for dirs)."""
-    na = [normalize(x) for x in a]
-    nb = [normalize(x) for x in b]
-    for x in na:
-        for y in nb:
-            if x == y or x.startswith(y + "/") or y.startswith(x + "/"):
-                return (x, y)
-    return None
-
-
 def shared_touch(scope, shared):
-    out = []
-    for s in scope:
-        ns = normalize(s)
-        for sh in shared:
-            nsh = normalize(sh)
-            if ns == nsh or ns.startswith(nsh + "/") or nsh.startswith(ns + "/"):
-                out.append(nsh)
-    return out
+    return [item for item in shared if scopes_intersect(scope, [item])]
 
 
 def build(stories_dir, status_map, shared):
+    # Markdown owns lifecycle; stale YAML must not promote incomplete documents.
+    status_map = {}
+    for path in Path(stories_dir).glob("*.story.md"):
+        sid = story_id(path.name.removesuffix(".story.md"))
+        if sid in status_map:
+            raise ValueError("duplicate story id: " + sid)
+        status_map[sid] = story_status(path)
     nodes, blocked = [], []
     scope_by_id, deps_by_id, epic_members = {}, {}, {}
 
@@ -175,7 +127,10 @@ def build(stories_dir, status_map, shared):
             continue
         epic, story, slug = int(m.group(1)), int(m.group(2)), m.group(3)
         sid = f"{epic}.{story}"
-        status = status_map.get(sid, "ready-for-dev")
+        status = status_map.get(sid, "unknown")
+        if status == "unknown":
+            blocked.append({"id": sid, "reason": "missing or invalid story status"})
+            continue
         if status not in ELIGIBLE:
             continue
 
@@ -184,12 +139,32 @@ def build(stories_dir, status_map, shared):
             blocked.append({"id": sid, "reason": "no Owned File/Module Scope declared"})
             continue
 
+        try:
+            for value in scope:
+                scope_prefix(value)
+        except ValueError as error:
+            blocked.append({"id": sid, "reason": str(error)})
+            continue
+
         nodes.append({"id": sid, "slug": slug, "epic": epic,
                       "status": status, "scope": scope})
         scope_by_id[sid] = scope
         deps_by_id[sid] = deps
         epic_members.setdefault(epic, []).append((story, sid))
 
+    # Missing/backlog/cancelled dependencies block the story and its dependents.
+    while True:
+        invalid = {sid for sid, deps in deps_by_id.items()
+                   if any(dep not in scope_by_id and status_map.get(dep) != "done" for dep in deps)}
+        if not invalid:
+            break
+        for sid in invalid:
+            blocked.append({"id": sid, "reason": "dependency missing, cancelled, backlog, or blocked"})
+            scope_by_id.pop(sid)
+            deps_by_id.pop(sid)
+        nodes = [node for node in nodes if node["id"] not in invalid]
+        epic_members = {epic: [(number, sid) for number, sid in members if sid not in invalid]
+                        for epic, members in epic_members.items()}
     valid = set(scope_by_id)
 
     # ordering edges: intra-epic sequence + explicit depends_on
@@ -207,7 +182,7 @@ def build(stories_dir, status_map, shared):
             add_edge(id_prev, id_next, "intra-epic-sequence")
     for sid, deps in deps_by_id.items():
         for d in deps:
-            if d in valid and d != sid:
+            if d in valid:
                 add_edge(d, sid, "depends_on")
 
     # undirected conflicts: file overlap, else shared-module semantic
@@ -246,7 +221,11 @@ def main(argv=None):
         return 2
 
     status_map = load_status_map(args.status)
-    nodes, ordering, conflicts, blocked = build(sdir, status_map, args.shared)
+    try:
+        nodes, ordering, conflicts, blocked = build(sdir, status_map, args.shared)
+    except ValueError as error:
+        print("error: " + str(error), file=sys.stderr)
+        return 2
 
     graph = {
         "max_parallel": args.max_parallel,

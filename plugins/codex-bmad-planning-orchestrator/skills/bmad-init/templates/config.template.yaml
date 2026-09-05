@@ -11,6 +11,8 @@ project:
   #   bmad-method  = 10-50+ stories, PRD + Architecture (+ optional UX)
   #   enterprise   = 30+ stories, + Security planning + DevOps planning
   track: "{{PROJECT_TRACK}}"
+  # Record once from project context: true for UI work, false for API/CLI-only.
+  has_ui: null
   created: "{{TIMESTAMP}}"
 
 paths:

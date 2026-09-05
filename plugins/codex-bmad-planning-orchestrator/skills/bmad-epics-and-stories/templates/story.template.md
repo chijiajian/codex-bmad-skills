@@ -51,12 +51,12 @@ so that **{{business value}}**.
 
 <!-- LOCKED. Concrete guidance compiled from the planning docs WITH SOURCE CITATIONS.
      Cite every fact: [Source: prd.md#anchor] / [Source: architecture.md#anchor] /
-     [Source: ux-design.md#anchor]. Label your own inferences [Inference]. -->
+     [Source: DESIGN.md#anchor]. Label your own inferences [Inference]. -->
 
 - {{Architecture/pattern guidance.}} [Source: architecture.md#{{anchor}}]
 - {{Data model / API contract detail.}} [Source: architecture.md#{{anchor}}]
 - {{Requirement detail this story satisfies.}} [Source: prd.md#{{FR-XX}}]
-- {{UI/UX acceptance detail, if relevant.}} [Source: ux-design.md#{{anchor}}]
+- {{UI/UX acceptance detail, if relevant.}} [Source: DESIGN.md#{{anchor}}]
 - {{A judgment call not in any doc.}} [Inference]
 
 ## Testing

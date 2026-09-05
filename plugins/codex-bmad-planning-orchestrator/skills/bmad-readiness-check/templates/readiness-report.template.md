@@ -2,6 +2,7 @@
 
 **Date:** {{date}}
 **Project:** {{project_name}}
+**Verdict:** {{VERDICT}}
 **Track:** {{track}}  _(Quick Flow | BMad Method | Enterprise)_
 **Requirements doc:** {{req_doc_path}}
 **Architecture doc:** {{arch_doc_path}}

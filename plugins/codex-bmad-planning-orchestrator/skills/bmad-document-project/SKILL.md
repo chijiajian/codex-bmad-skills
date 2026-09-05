@@ -1,6 +1,7 @@
 ---
 name: bmad-document-project
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Reads an existing codebase to produce bmad-output/project-documentation.md for
   brownfield planning. Use for "$bmad-document-project", "bmad:document-project",
   or when the user says "document this codebase", "document the project", "scan
@@ -17,13 +18,15 @@ description: |
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
 
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
+
 **BROWNFIELD entry point.** When a project already has code, planning skills need
 ground truth — not guesses about the stack or conventions. This skill performs a
 systematic, READ-ONLY codebase scan and emits `project-documentation.md`, the
 authoritative current-state snapshot that every downstream BMAD planning skill loads.
 
 **No code is written, modified, or executed.** Allowed tools are Read, Glob, Grep,
-Write (for the output document only), and TodoWrite (to track scan progress).
+Write (for the output document only), and the available progress-tracking tool (to track scan progress).
 
 ---
 
@@ -43,7 +46,7 @@ Ask which intent applies if ambiguous; never silently regenerate an existing doc
 
 ### Create — initial scan
 
-Use TodoWrite to track the six scan passes below. Complete every pass before writing
+Use the available progress-tracking tool to track the six scan passes below. Complete every pass before writing
 the final document.
 
 **Pass 1 — Repository skeleton**

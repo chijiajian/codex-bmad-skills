@@ -1,6 +1,7 @@
 ---
 name: bmad-product-brief
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Creates, updates, or validates a BMAD product brief covering problem, users,
   core features, goals, constraints, and success metrics. Use for
   "$bmad-product-brief", "bmad:product-brief", "bmad:brief", or when the user says
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Phase:** Analysis (Phase 1)
 **Upstream counterpart:** `bmad-business-analyst`
@@ -38,7 +41,7 @@ If unclear, ask: "Would you like to **create** a new product brief, **update** a
 
 ## Create Intent — Guided Discovery
 
-This is a conversation, not a form dump. Work through these sections **one at a time**, asking follow-up questions before moving on. Use TodoWrite to track progress.
+This is a conversation, not a form dump. Work through these sections **one at a time**, reusing supplied context and asking only for missing decisions. Use the available progress-tracking tool to track progress.
 
 ### Discovery Sections (in order)
 
@@ -61,7 +64,7 @@ This is a conversation, not a form dump. Work through these sections **one at a 
 
 ### Writing the Brief
 
-After all sections are confirmed:
+After all sections have supplied answers or clearly labelled assumptions:
 1. Populate `../bmad-product-brief/templates/product-brief.template.md` with the gathered answers.
 2. Write the result to `bmad-output/product-brief-<slug>-<YYYY-MM-DD>.md` (create `bmad-output/` if absent).
 3. Log the decision to `bmad-output/decision-log.md` (append: date, action, brief filename).

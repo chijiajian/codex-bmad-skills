@@ -33,7 +33,7 @@ dependency on any specific runner.
 
 ```json
 {
-  "id": "2.1.stripe-integration",
+  "id": "2.1",
   "storyFilePath": "bmad-output/stories/2.1.stripe-integration.story.md",
   "status": "ready-for-dev",
   "epic": "2",
@@ -61,9 +61,9 @@ dependency on any specific runner.
 #### Field-by-field
 
 **`id`** (string, required)
-Unique identifier within this manifest. Derived from the story filename stem
-(`{epic}.{story}.{slug}`) or from the story file's own ID heading. Must be stable
-across manifest regenerations for the same story.
+Unique epic.story identifier, matching the story header and numeric filename prefix.
+Normalize legacy epic.story.slug IDs for dependency matching. Preserve numeric identity
+across manifest regenerations.
 
 **`storyFilePath`** (string, required)
 Path to the `.story.md` file, relative to the project root. Runners should read
@@ -89,17 +89,16 @@ This list is the primary mechanism for parallel-conflict safety: a runner must
 not schedule two stories that share any path in their `ownedScope` in the same
 parallel slot.
 
-Empty array is valid for stories that only add new files (conflict risk is lower,
-but the runner must still handle it).
+The version 1.0 schema permits an empty array structurally, but planning validation
+blocks it. New files also need declared paths; report the gap before export.
 
 **`wave`** (integer, required)
-Execution wave number, minimum 1. Wave 1 stories have no dependencies and may
-start immediately. Wave N stories may start only after all wave N-1 dependencies
-are complete.
+Execution wave number, minimum 1. Dependencies within the manifest must occupy
+earlier waves. Dependencies on completed or external stories remain in the snapshot;
+verify them from source artifacts before starting any story.
 
-If the story file includes explicit wave annotations (e.g., in the Dependency Maps
-section), those values take precedence. Otherwise, the skill computes wave order
-from the dependency graph.
+Use the current sprint-status.yaml parallel_set first. Story annotations are a legacy
+fallback. Validate scope conflicts as well as dependency order before export.
 
 **`parallelSet`** (string or null)
 Optional label grouping stories that were explicitly planned to run concurrently

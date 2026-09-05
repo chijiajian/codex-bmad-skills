@@ -70,8 +70,8 @@ create `/bmad`.
 
 | Scenario | Start with | Continue with |
 | --- | --- | --- |
-| New project | `bmad:status` -> `bmad:init` | `bmad:product-brief` -> `bmad:prd` -> `bmad:architecture` -> `bmad:stories` |
-| Small feature | `bmad:init` | `bmad:tech-spec` -> `bmad:stories` |
+| New project | `bmad:status` -> `bmad:init` | `bmad:product-brief` -> `bmad:prd` -> `bmad:architecture` -> readiness check -> `bmad:stories` -> `bmad:sprint-plan` |
+| Small feature | `bmad:init` | `bmad:tech-spec` -> readiness check -> `bmad:stories` -> `bmad:sprint-plan` |
 | Claude BMAD project | `bmad:migrate` -> `bmad:status` | Next recommended BMAD skill |
 | Brownfield planning | `bmad:document-project` | `bmad:prd` or `bmad:tech-spec` |
 | Parallel implementation prep | `bmad:sprint-plan` | `bmad:parallel-plan` -> `bmad:handoff` |
@@ -140,11 +140,15 @@ Remove the skills-only install with:
 
 ## Validate
 
+Helpers require Python 3.9+. YAML sequencing uses PyYAML and handoff schema validation
+uses jsonschema; install them for the same Python interpreter used by the helpers:
+
 ```sh
+python3 -m pip install -r requirements.txt
 ./scripts/validate.sh
 ```
 
-The validator checks the Codex plugin manifest, all skill frontmatter, and BMAD's planning-only scope rules.
+The validator checks manifests, skill frontmatter, planning-only scope, and behavioral regression cases for routing, scope conflicts, readiness, scheduling and handoff.
 
 ## Repository Layout
 

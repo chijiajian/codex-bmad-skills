@@ -2,3 +2,8 @@
 bmad-output/
 /tmp/
 *.log
+
+# Python helper caches and local environments
+__pycache__/
+*.pyc
+.venv/

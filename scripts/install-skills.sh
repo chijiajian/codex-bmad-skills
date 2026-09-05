@@ -5,6 +5,12 @@ REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 PLUGIN_ROOT="$REPO_ROOT/plugins/codex-bmad-planning-orchestrator"
 CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
 SKILLS_DEST="$CODEX_HOME_DIR/skills"
+if [ "${1:-}" = "--destination" ] && [ "$#" -eq 2 ]; then
+  SKILLS_DEST="$2"
+elif [ "$#" -ne 0 ]; then
+  echo "Usage: $0 [--destination <skills-directory>]" >&2
+  exit 1
+fi
 SHARED_DEST="$SKILLS_DEST/_bmad-shared"
 
 if [ ! -d "$PLUGIN_ROOT/skills" ]; then

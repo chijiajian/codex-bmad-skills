@@ -1,6 +1,7 @@
 ---
 name: bmad-spec
 description: |
+  For BMAD planning requests or an established BMAD planning workflow.
   Distills messy input into a five-field SPEC.md kernel: Problem, Capabilities,
   Constraints, Non-Goals, and Success Metrics. Use for "$bmad-spec", "bmad:spec",
   or when the user says "create a spec", "write a spec", "distill this into a
@@ -15,6 +16,8 @@ description: |
 ## Codex Resource Paths
 
 Resolve bundled resources relative to this skill directory. When running a bundled script, use the absolute path to that script from the installed plugin location; relative examples are shown from this `SKILL.md` directory. Shared BMAD helper scripts live under `../../scripts/`, and shared references live under `../../references/`.
+
+Use the [shared planning contract](../../references/planning-contract.md) for artifact names, status ownership, existing authorization, and runtime tool adaptation.
 
 **Function:** Accept messy, unstructured, or verbose input and produce a lean
 `SPEC.md` kernel (five fields, no more) that anchors every downstream planning
@@ -82,12 +85,12 @@ before writing to disk. Keep each field tight:
 - Non-Goals: 2–6 bullet points, clear and unambiguous.
 - Success Metrics: 2–5 bullet points, each with a measurable signal.
 
-After presenting, ask one targeted question: "Does anything here need to change
-before I write SPEC.md?"
+Resolve any material scope ambiguity with one targeted question. If the user already
+requested the file and supplied enough context, proceed to writing it.
 
 ### 4. Write
 
-Once the user confirms (or revises), write `SPEC.md` using the template:
+When creation is requested and scope is clear, write `SPEC.md` using the template:
 
 ```
 ../bmad-spec/templates/spec.template.md

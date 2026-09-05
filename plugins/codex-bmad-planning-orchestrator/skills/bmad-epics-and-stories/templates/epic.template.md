@@ -5,7 +5,7 @@
 > dependencies. Story detail lives in the individual {epic}.{story}.{slug}.story.md files.
 >
 > Track: {{Quick Flow | BMad Method | Enterprise}}
-> Sources: prd.md, architecture.md{{, ux-design.md}}
+> Sources: prd.md, architecture.md{{, DESIGN.md}}
 
 ---
 

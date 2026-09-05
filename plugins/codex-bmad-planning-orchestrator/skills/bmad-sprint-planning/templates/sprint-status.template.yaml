@@ -27,7 +27,7 @@ epics:
   # - id: "epic-2"
   #   title: "{{EPIC_2_TITLE}}"
   #   description: "{{EPIC_2_DESCRIPTION}}"
-  #   status: backlog
+  #   status: ready-for-dev
   #   story_ids:
   #     - "..."
 
@@ -41,10 +41,10 @@ epics:
 #   Two stories in the same parallel_set MUST have non-overlapping owned_scope.
 #
 # dependencies: list of story ids that must reach status=done before this story
-#   can advance to ready-for-dev.
+#   may begin execution (ready-for-dev itself describes document readiness).
 # ---------------------------------------------------------------------------
 stories:
-  - id: "{{EPIC_ID}}.{{STORY_NUMBER}}.{{SLUG}}"
+  - id: "{{EPIC_ID}}.{{STORY_NUMBER}}"
     title: "{{STORY_TITLE}}"
     epic_id: "{{EPIC_ID}}"
     status: ready-for-dev       # backlog | ready-for-dev | in-progress | review | done
@@ -58,7 +58,7 @@ stories:
   # - id: "2.1.stripe-integration"
   #   title: "Stripe payment integration"
   #   epic_id: "epic-2"
-  #   status: backlog
+  #   status: ready-for-dev
   #   file: "bmad-output/stories/2.1.stripe-integration.story.md"
   #   parallel_set: 2
   #   dependencies:

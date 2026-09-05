@@ -39,7 +39,7 @@ Always clarify which intent applies if ambiguous; never blindly one-shot.
 
 ### Create
 
-1. Read `{{primary_input}}`; extract {{what_to_extract}} (use TodoWrite to track sections).
+1. Read `{{primary_input}}`; extract {{what_to_extract}} (use the available progress-tracking tool to track sections).
 2. {{step_2}}
 3. {{step_3}}
 4. Fill `../{{skill_name}}/templates/{{output_template}}.template.md`
@@ -91,7 +91,7 @@ Detailed patterns, examples, and checklists live in [REFERENCE.md](REFERENCE.md)
 
 ## Notes for LLMs
 
-- Use TodoWrite to track multi-step workflow progress.
+- Use the available progress-tracking tool to track multi-step workflow progress.
 - Never implement code; produce planning documents and hand off.
 - Resolve internal paths relative to the installed skill directory; never hardcode absolute machine paths.
 - Output artifacts go under `bmad-output/` by default.

@@ -164,7 +164,7 @@ Coordination: TODO — describe fan-out/fan-in approach.
 
 ## Notes for LLMs
 
-- Use TodoWrite to track multi-step workflow progress.
+- Use the available progress-tracking tool to track multi-step workflow progress.
 - Never implement code; produce planning documents and hand off.
 - Resolve internal paths relative to the installed skill directory.
 - Output artifacts go under \`bmad-output/\` by default.

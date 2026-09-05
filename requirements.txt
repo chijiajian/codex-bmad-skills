@@ -1,0 +1,1 @@
+-r plugins/codex-bmad-planning-orchestrator/scripts/requirements.txt

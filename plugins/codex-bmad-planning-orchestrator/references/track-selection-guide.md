@@ -7,7 +7,7 @@ Upstream BMAD Method v6.x reference | BMAD Code Organization
 
 ## Overview
 
-BMAD uses three scale-adaptive **tracks** — never numbered levels, phases, or tiers. A track is a planning-need decision that determines which planning artifacts are required before implementation begins. The heuristics in this guide suggest a track; the user always confirms or overrides.
+BMAD uses three scale-adaptive **tracks** — never numbered levels, phases, or tiers. A track is a planning-need decision that determines which planning artifacts are required before implementation begins. Reuse the current track from config.yaml. When selecting a track for the first time, the heuristics suggest one and the user confirms or overrides.
 
 ---
 
@@ -86,7 +86,7 @@ BMad Method is the right track when:
 | `architecture.md` | System design, ADRs, FR/NFR coverage matrix, component boundaries |
 | `epics.md` | Ordered epic map with story lists |
 | `bmad-output/stories/*.story.md` | Compiled story context objects |
-| `ux-design.md` *(optional)* | Visual system + experience plan (only if the project has a UI) |
+| `DESIGN.md` + `EXPERIENCE.md` *(UI work)* | Visual system + experience plan |
 
 ### Planning Flow
 
